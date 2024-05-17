@@ -1,62 +1,34 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'dart:math';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../provider/user_provider.dart';
 
-class Temperature_monitoring extends StatefulWidget {
-  const Temperature_monitoring({super.key});
+class EnergyMonitoring extends StatefulWidget {
+  const EnergyMonitoring({super.key});
 
   @override
-  State<Temperature_monitoring> createState() => _Temperature_monitoringState();
+  State<EnergyMonitoring> createState() => _EnergyMonitoringState();
 }
 
-class _Temperature_monitoringState extends State<Temperature_monitoring> {
+class _EnergyMonitoringState extends State<EnergyMonitoring> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly  ,
-      children: [
-        Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             CircularGraph(),
             LineGraph(),
           ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            CircularGraph(),
-            LineGraph(),
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            CircularGraph(),
-            LineGraph(),
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            CircularGraph(),
-            LineGraph(),
-          ],
-        )
-      ],
-    );
+        );
   }
 }
 
@@ -77,58 +49,20 @@ class LineGraph extends StatefulWidget {
 }
 
 class _LineGraphState extends State<LineGraph> {
-  int index = 0;
-  final List<TimeSeriesData> chartData = [
-      // TimeSeriesData(DateTime(2023, 1, 1), 30, 40, 50),
-      // TimeSeriesData(DateTime(2023, 1, 2), 35, 45, 55),
-      // TimeSeriesData(DateTime(2023, 1, 3), 40, 50, 60),
-      // TimeSeriesData(DateTime(2023, 1, 4), 45, 55, 65),
-      // TimeSeriesData(DateTime(2023, 1, 5), 50, 60, 70),
-    ];
   @override
   Widget build(BuildContext context) {
-    
+    final List<TimeSeriesData> chartData = [
+      TimeSeriesData(DateTime(2023, 1, 1), 30, 40, 50),
+      TimeSeriesData(DateTime(2023, 1, 2), 35, 45, 55),
+      TimeSeriesData(DateTime(2023, 1, 3), 40, 50, 60),
+      TimeSeriesData(DateTime(2023, 1, 4), 45, 55, 65),
+      TimeSeriesData(DateTime(2023, 1, 5), 50, 60, 70),
+    ];
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    /// Creates an instance of random to generate the random number.
-    final Random random = Random();
-
-    num _getRandomInt(int min, int max) {
-      return min + random.nextInt(max - min);
-    }
-
-    /// Method to update the chart data.
-
-    List<TimeSeriesData> updatelinegraph() {
-      setState(() {
-        if (chartData.length <= 6) {
-          chartData.add(TimeSeriesData(DateTime(2023, 1, index), 30 + random.nextDouble() * (90 - 30), 40, 50),);
-        } else {
-          chartData.removeAt(0);
-          chartData.add(TimeSeriesData(DateTime(2023, 1, index), 30 + random.nextDouble() * (90 - 30), 40, 50),);
-        }
-      });
-      return chartData;
-    }
-
-    List<TimeSeriesData> linegraph() {
-      return chartData;
-    }
-
-    Timer.periodic(Duration(seconds: 2), (timer) {
-      setState(() {
-        if (Provider.of<InitialDurationProvider>(context, listen: false)
-            .handleStartStop) {
-          updatelinegraph();
-          index += 1;
-        } else {
-          linegraph();
-        }
-      });
-      // Call your function here
-    });
     return Container(
       width: width * 0.25,
+      height: height * 0.4,
       child: SfCartesianChart(
         primaryXAxis: DateTimeAxis(),
         primaryYAxis: NumericAxis(),
@@ -137,7 +71,7 @@ class _LineGraphState extends State<LineGraph> {
         series: <ChartSeries>[
           LineSeries<TimeSeriesData, DateTime>(
             //name: 'Temperature',
-            // name: '',
+            name: '',
             dataSource: chartData,
             xValueMapper: (TimeSeriesData data, _) => data.time,
             yValueMapper: (TimeSeriesData data, _) => data.value1,
@@ -181,7 +115,7 @@ class _CircularGraphState extends State<CircularGraph> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return CircularPercentIndicator(
-      radius: (10 / 100) *
+      radius: (12 / 100) *
           min(MediaQuery.of(context).size.width,
               MediaQuery.of(context).size.height),
       lineWidth: 15.0,
