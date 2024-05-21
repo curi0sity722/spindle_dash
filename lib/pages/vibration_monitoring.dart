@@ -94,15 +94,15 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
                 RadialWdget(
                   radialchartdata: chartdata[0],
                 ),
-                Text('Spindle (F)'),
+                Text('Vibration Level in mm/sec (rms)'),
                 SizedBox(
                   height: height * 0.01,
                 ),
-                Text('Vibration Level (RMS)')
+                Text('Spindle (F)',style: TextStyle(fontWeight: FontWeight.bold),),
               ],
             ),
             Column(
-              children: [LineGraph(), Text('time in min\nSpindle (F)')],
+              children: [LineGraph(), Text('time in min')],
             )
           ],
         ),
@@ -114,11 +114,17 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
                 RadialWdget(
                   radialchartdata: chartdata[1],
                 ),
-                Text('Spindle (R)'),
+                Text('Vibration Level in mm/sec (rms)'),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Text('Spindle (R)',style: TextStyle(fontWeight: FontWeight.bold),),
               ],
             ),
             Column(
-              children: [LineGraph(), Text('time in min\nSpindle (R)')],
+              children: [
+                // Text('Spindle (R)',style: TextStyle(fontWeight: FontWeight.bold),),
+                LineGraph(), Text('time in min')],
             )
           ],
         )

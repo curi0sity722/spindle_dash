@@ -23,7 +23,7 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly  ,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -32,37 +32,30 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
             Column(
               children: [
                 CircularGraph(),
-                SizedBox(height: height * 0.01,),
-                Text('Spindle (F) Bearing'),
-                SizedBox(height: height * 0.01,),
-                Text('Temperature in °C')
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Text('Temperature in °C'),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Text(
+                  'Spindle (F) Bearing',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ],
             ),
             Column(
               children: [
+                Text(
+                  'Spindle (F) Bearing Temperature',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
                 LineGraph(),
-                Text('Spindle (F) Bearing Temperature\ntime in min')
-              ],
-            ),
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-             Column(
-              children: [
-                CircularGraph(),
-                SizedBox(height: height * 0.01,),
-                Text('Spindle (R) Bearing'),
-                SizedBox(height: height * 0.01,),
-                Text('Temperature in °C')
-              ],
-            ),
-            Column(
-              children: [
-                LineGraph(),
-                Text('Spindle (R) Bearing Temperature\ntime in min')
+                Text('time in min')
               ],
             ),
           ],
@@ -74,16 +67,28 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
             Column(
               children: [
                 CircularGraph(),
-                SizedBox(height: height * 0.01,),
-                Text('Coolant inlet'),
-                SizedBox(height: height * 0.01,),
-                Text('Temperature in °C')
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Text('Temperature in °C'),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Text('Spindle (R) Bearing',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
             Column(
               children: [
+                Text(
+                  'Spindle (F) Bearing Temperature',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
                 LineGraph(),
-                Text('Coolant inlet\nTemperature in °C')
+                Text('time in min')
               ],
             ),
           ],
@@ -95,16 +100,61 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
             Column(
               children: [
                 CircularGraph(),
-                SizedBox(height: height * 0.01,),
-                Text('Coolant outlet'),
-                SizedBox(height: height * 0.01,),
-                Text('Temperature in °C')
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Text('Temperature in °C'),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Text('Coolant inlet',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
             Column(
               children: [
+                Text(
+                  'Coolant inlet',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
                 LineGraph(),
-                Text('Coolant outlet\nTemperature in °C')
+                Text('Temperature in °C'),
+              ],
+            ),
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+              children: [
+                CircularGraph(),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Text('Temperature in °C'),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Text('Coolant outlet',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+              ],
+            ),
+            Column(
+              children: [
+                Text(
+                  'Coolant outlet',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                LineGraph(),
+                Text('Temperature in °C')
               ],
             ),
             // Image.asset('assets/cmti.jpg'),
@@ -134,13 +184,13 @@ class LineGraph extends StatefulWidget {
 class _LineGraphState extends State<LineGraph> {
   int index = 0;
   final List<TimeSeriesData> chartData = [
-      // TimeSeriesData(DateTime(2023, 1, 1), 30, 40, 50),
-      // TimeSeriesData(DateTime(2023, 1, 2), 35, 45, 55),
-      // TimeSeriesData(DateTime(2023, 1, 3), 40, 50, 60),
-      // TimeSeriesData(DateTime(2023, 1, 4), 45, 55, 65),
-      // TimeSeriesData(DateTime(2023, 1, 5), 50, 60, 70),
-    ];
-  
+    // TimeSeriesData(DateTime(2023, 1, 1), 30, 40, 50),
+    // TimeSeriesData(DateTime(2023, 1, 2), 35, 45, 55),
+    // TimeSeriesData(DateTime(2023, 1, 3), 40, 50, 60),
+    // TimeSeriesData(DateTime(2023, 1, 4), 45, 55, 65),
+    // TimeSeriesData(DateTime(2023, 1, 5), 50, 60, 70),
+  ];
+
   Timer? _timer;
 
   void initState() {
@@ -196,19 +246,17 @@ class _LineGraphState extends State<LineGraph> {
     _timer?.cancel(); // Cancel timer in dispose
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    
+
     return Container(
       width: width * 0.25,
       child: SfCartesianChart(
         primaryXAxis: DateTimeAxis(),
-        primaryYAxis: NumericAxis(
-          title: AxisTitle(text: 'Temperature in °C')
-        ),
+        primaryYAxis: NumericAxis(title: AxisTitle(text: 'Temperature in °C')),
         legend: Legend(isVisible: true),
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <ChartSeries>[
@@ -220,7 +268,6 @@ class _LineGraphState extends State<LineGraph> {
             yValueMapper: (TimeSeriesData data, _) => data.value1,
             markerSettings: MarkerSettings(isVisible: true),
           ),
-          
         ],
       ),
     );
