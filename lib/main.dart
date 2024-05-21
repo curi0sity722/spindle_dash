@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:spindle_dash/pages/energy_monitoring.dart';
 import 'package:spindle_dash/pages/force_monitoring.dart';
 import 'package:spindle_dash/pages/temperature_monitoring.dart';
+import 'package:spindle_dash/pages/vibration_analysis.dart';
 import 'package:spindle_dash/pages/vibration_monitoring.dart';
 import 'package:spindle_dash/provider/user_provider.dart';
 
@@ -71,7 +72,12 @@ class _spindledashboardState extends State<spindledashboard>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Smart Integrated Motor Spindle DashBoard'),
+        title: Row(
+          children: [
+            // Image.asset('assets/cmti.jpeg'),
+            Text('Smart Integrated Motor Spindle DashBoard'),
+          ],
+        ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(48.0), // Adjust height as needed
           child: TabBar(
@@ -118,7 +124,7 @@ class _spindledashboardState extends State<spindledashboard>
           Center(child: Temperature_monitoring()),
           Center(child: EnergyMonitoring()),
           Center(child: ForceMonitoring()),
-          Center(child: Text('Vibration Diagnostics')),
+          Center(child: VibrationAnalysis()),
         ],
       ),
     );

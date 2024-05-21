@@ -17,44 +17,45 @@ class VibrationMonitoring extends StatefulWidget {
 
 class _VibrationMonitoringState extends State<VibrationMonitoring> {
   final Random random = Random();
-    num _getRandomInt(int min, int max) {
-      return min + random.nextInt(max - min);
-    }
+  num _getRandomInt(int min, int max) {
+    return min + random.nextInt(max - min);
+  }
 
   List<List<_ChartShaderData>> chartdata = [
-      [
-        _ChartShaderData('X', 10, '100%'),
-        _ChartShaderData('Y', 11, '100%'),
-        _ChartShaderData('Z', 12, '100%'),
-      ],
-      [
-        _ChartShaderData('X', 10, '100%'),
-        _ChartShaderData('Y', 11, '100%'),
-        _ChartShaderData('Z', 12, '100%'),
-      ],
-    ];
+    [
+      _ChartShaderData('X', 10, '100%'),
+      _ChartShaderData('Y', 11, '100%'),
+      _ChartShaderData('Z', 12, '100%'),
+    ],
+    [
+      _ChartShaderData('X', 10, '100%'),
+      _ChartShaderData('Y', 11, '100%'),
+      _ChartShaderData('Z', 12, '100%'),
+    ],
+  ];
 
-    Timer? _timer;
-    
-    void initState() {
-      super.initState();
-      _timer = Timer.periodic(Duration(seconds: 2), (timer) {
-        setState(() {
-          chartdata[0] = [
-            _ChartShaderData('X', _getRandomInt(5, 10), '100%'),
-            _ChartShaderData('Y', _getRandomInt(3, 8), '100%'),
-            _ChartShaderData('Z', _getRandomInt(1, 6), '100%'),
-          ];
-          chartdata[1] = [
-            _ChartShaderData('X', _getRandomInt(5, 10), '100%'),
-            _ChartShaderData('Y', _getRandomInt(3, 8), '100%'),
-            _ChartShaderData('Z', _getRandomInt(1, 6), '100%'),
-          ];
-        });
-        // Call your function here
+  Timer? _timer;
+
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(Duration(seconds: 2), (timer) {
+      setState(() {
+        chartdata[0] = [
+          _ChartShaderData('X', _getRandomInt(5, 10), '100%'),
+          _ChartShaderData('Y', _getRandomInt(3, 8), '100%'),
+          _ChartShaderData('Z', _getRandomInt(1, 6), '100%'),
+        ];
+        chartdata[1] = [
+          _ChartShaderData('X', _getRandomInt(5, 10), '100%'),
+          _ChartShaderData('Y', _getRandomInt(3, 8), '100%'),
+          _ChartShaderData('Z', _getRandomInt(1, 6), '100%'),
+        ];
       });
-    }
-    @override
+      // Call your function here
+    });
+  }
+
+  @override
   void dispose() {
     _timer?.cancel(); // Cancel timer in dispose
     super.dispose();
@@ -64,10 +65,6 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-
-    
-
-    
     // return Column(
     //   mainAxisAlignment: MainAxisAlignment.center,
     //   children: [
@@ -92,19 +89,37 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            RadialWdget(
-              radialchartdata: chartdata[0],
+            Column(
+              children: [
+                RadialWdget(
+                  radialchartdata: chartdata[0],
+                ),
+                Text('Spindle (F)'),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Text('Vibration Level (RMS)')
+              ],
             ),
-            LineGraph()
+            Column(
+              children: [LineGraph(), Text('time in min\nSpindle (F)')],
+            )
           ],
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            RadialWdget(
-              radialchartdata: chartdata[1],
+            Column(
+              children: [
+                RadialWdget(
+                  radialchartdata: chartdata[1],
+                ),
+                Text('Spindle (R)'),
+              ],
             ),
-            LineGraph()
+            Column(
+              children: [LineGraph(), Text('time in min\nSpindle (R)')],
+            )
           ],
         )
       ],
@@ -136,43 +151,10 @@ class _LineGraphState extends State<LineGraph> {
     // TimeSeriesData(DateTime(2023, 1, 4), 45, 55, 65),
     // TimeSeriesData(DateTime(2023, 1, 5), 50, 60, 70),
   ];
+  Timer? _timer;
 
-  @override
-  Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    final Random random = Random();
-
-    double _getRandomInt(int min, int max) {
-      return (min + random.nextInt(max - min)) as double;
-    }
-
-    /// Method to update the chart data.
-
-    List<TimeSeriesData> updatelinegraph() {
-      setState(() {
-        if (chartData.length <= 6) {
-          chartData.add(
-            TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
-                _getRandomInt(20, 80), _getRandomInt(30, 90)),
-          );
-        } else {
-          chartData.removeAt(0);
-          chartData.add(
-            TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
-                _getRandomInt(20, 80), _getRandomInt(30, 90)),
-          );
-        }
-      });
-      return chartData;
-    }
-
-    List<TimeSeriesData> linegraph() {
-      return chartData;
-    }
-
-    Timer? _timer;
-
+  void initState() {
+    super.initState();
     Timer.periodic(Duration(microseconds: 500), (timer) {
       if (mounted) {
         // Check if widget is still mounted
@@ -187,18 +169,55 @@ class _LineGraphState extends State<LineGraph> {
         });
       }
     });
+  }
 
-    @override
-    void dispose() {
-      _timer?.cancel(); // Cancel timer in dispose
-      super.dispose();
-    }
+  final Random random = Random();
+
+  double _getRandomInt(int min, int max) {
+    return (min + random.nextInt(max - min)) as double;
+  }
+
+  /// Method to update the chart data.
+
+  List<TimeSeriesData> updatelinegraph() {
+    setState(() {
+      if (chartData.length <= 6) {
+        chartData.add(
+          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
+              _getRandomInt(20, 80), _getRandomInt(30, 90)),
+        );
+      } else {
+        chartData.removeAt(0);
+        chartData.add(
+          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
+              _getRandomInt(20, 80), _getRandomInt(30, 90)),
+        );
+      }
+    });
+    return chartData;
+  }
+
+  List<TimeSeriesData> linegraph() {
+    return chartData;
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancel timer in dispose
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     return Container(
       width: width * 0.25,
       child: SfCartesianChart(
-        primaryXAxis: DateTimeAxis(),
-        primaryYAxis: NumericAxis(),
+        primaryXAxis: DateTimeAxis(title: AxisTitle()),
+        primaryYAxis:
+            NumericAxis(title: AxisTitle(text: 'Vibration level in mm/sec')),
         legend: Legend(isVisible: true),
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <ChartSeries>[

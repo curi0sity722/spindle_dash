@@ -20,6 +20,8 @@ class Temperature_monitoring extends StatefulWidget {
 class _Temperature_monitoringState extends State<Temperature_monitoring> {
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly  ,
       children: [
@@ -27,32 +29,85 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            CircularGraph(),
-            LineGraph(),
+            Column(
+              children: [
+                CircularGraph(),
+                SizedBox(height: height * 0.01,),
+                Text('Spindle (F) Bearing'),
+                SizedBox(height: height * 0.01,),
+                Text('Temperature in °C')
+              ],
+            ),
+            Column(
+              children: [
+                LineGraph(),
+                Text('Spindle (F) Bearing Temperature\ntime in min')
+              ],
+            ),
           ],
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            CircularGraph(),
-            LineGraph(),
+             Column(
+              children: [
+                CircularGraph(),
+                SizedBox(height: height * 0.01,),
+                Text('Spindle (R) Bearing'),
+                SizedBox(height: height * 0.01,),
+                Text('Temperature in °C')
+              ],
+            ),
+            Column(
+              children: [
+                LineGraph(),
+                Text('Spindle (R) Bearing Temperature\ntime in min')
+              ],
+            ),
           ],
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            CircularGraph(),
-            LineGraph(),
+            Column(
+              children: [
+                CircularGraph(),
+                SizedBox(height: height * 0.01,),
+                Text('Coolant inlet'),
+                SizedBox(height: height * 0.01,),
+                Text('Temperature in °C')
+              ],
+            ),
+            Column(
+              children: [
+                LineGraph(),
+                Text('Coolant inlet\nTemperature in °C')
+              ],
+            ),
           ],
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            CircularGraph(),
-            LineGraph(),
+            Column(
+              children: [
+                CircularGraph(),
+                SizedBox(height: height * 0.01,),
+                Text('Coolant outlet'),
+                SizedBox(height: height * 0.01,),
+                Text('Temperature in °C')
+              ],
+            ),
+            Column(
+              children: [
+                LineGraph(),
+                Text('Coolant outlet\nTemperature in °C')
+              ],
+            ),
+            // Image.asset('assets/cmti.jpg'),
           ],
         )
       ],
@@ -85,59 +140,81 @@ class _LineGraphState extends State<LineGraph> {
       // TimeSeriesData(DateTime(2023, 1, 4), 45, 55, 65),
       // TimeSeriesData(DateTime(2023, 1, 5), 50, 60, 70),
     ];
+  
+  Timer? _timer;
+
+  void initState() {
+    super.initState();
+    Timer.periodic(Duration(microseconds: 500), (timer) {
+      if (mounted) {
+        // Check if widget is still mounted
+        setState(() {
+          if (Provider.of<InitialDurationProvider>(context, listen: false)
+              .handleStartStop) {
+            updatelinegraph();
+            index += 1;
+          } else {
+            linegraph();
+          }
+        });
+      }
+    });
+  }
+
+  final Random random = Random();
+
+  double _getRandomInt(int min, int max) {
+    return (min + random.nextInt(max - min)) as double;
+  }
+
+  /// Method to update the chart data.
+
+  List<TimeSeriesData> updatelinegraph() {
+    setState(() {
+      if (chartData.length <= 6) {
+        chartData.add(
+          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
+              _getRandomInt(20, 80), _getRandomInt(30, 90)),
+        );
+      } else {
+        chartData.removeAt(0);
+        chartData.add(
+          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
+              _getRandomInt(20, 80), _getRandomInt(30, 90)),
+        );
+      }
+    });
+    return chartData;
+  }
+
+  List<TimeSeriesData> linegraph() {
+    return chartData;
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancel timer in dispose
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    /// Creates an instance of random to generate the random number.
-    final Random random = Random();
-
-    num _getRandomInt(int min, int max) {
-      return min + random.nextInt(max - min);
-    }
-
-    /// Method to update the chart data.
-
-    List<TimeSeriesData> updatelinegraph() {
-      setState(() {
-        if (chartData.length <= 6) {
-          chartData.add(TimeSeriesData(DateTime(2023, 1, index), 30 + random.nextDouble() * (90 - 30), 40, 50),);
-        } else {
-          chartData.removeAt(0);
-          chartData.add(TimeSeriesData(DateTime(2023, 1, index), 30 + random.nextDouble() * (90 - 30), 40, 50),);
-        }
-      });
-      return chartData;
-    }
-
-    List<TimeSeriesData> linegraph() {
-      return chartData;
-    }
-
-    Timer.periodic(Duration(seconds: 2), (timer) {
-      setState(() {
-        if (Provider.of<InitialDurationProvider>(context, listen: false)
-            .handleStartStop) {
-          updatelinegraph();
-          index += 1;
-        } else {
-          linegraph();
-        }
-      });
-      // Call your function here
-    });
+    
     return Container(
       width: width * 0.25,
       child: SfCartesianChart(
         primaryXAxis: DateTimeAxis(),
-        primaryYAxis: NumericAxis(),
+        primaryYAxis: NumericAxis(
+          title: AxisTitle(text: 'Temperature in °C')
+        ),
         legend: Legend(isVisible: true),
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <ChartSeries>[
           LineSeries<TimeSeriesData, DateTime>(
             //name: 'Temperature',
-            // name: '',
+            name: '',
             dataSource: chartData,
             xValueMapper: (TimeSeriesData data, _) => data.time,
             yValueMapper: (TimeSeriesData data, _) => data.value1,

@@ -21,11 +21,40 @@ class EnergyMonitoring extends StatefulWidget {
 class _EnergyMonitoringState extends State<EnergyMonitoring> {
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            CircularGraph(),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    Column(
+                      children: [
+                        CircularGraph(text: 'V'),
+                        SizedBox(height: height * 0.02,),
+                        Text('Spindle Input Voltage in V')
+                      ],
+                    ),
+                    SizedBox(width: width * 0.15,),
+                    Column(
+                      children: [
+                        CircularGraph(text: 'A'),
+                        SizedBox(height: height * 0.02,),
+                        Text('Spindle Current in Amps')
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: height * 0.1,),
+                CircularGraph(text: 'kWh'),
+                SizedBox(height: height * 0.02,),
+                Text('Spindle Energy in kWh')
+              ],
+            ),
             LineGraph(),
           ],
         );
@@ -49,23 +78,85 @@ class LineGraph extends StatefulWidget {
 }
 
 class _LineGraphState extends State<LineGraph> {
+  int index = 0;
+  final List<TimeSeriesData> chartData = [
+      // TimeSeriesData(DateTime(2023, 1, 1), 30, 40, 50),
+      // TimeSeriesData(DateTime(2023, 1, 2), 35, 45, 55),
+      // TimeSeriesData(DateTime(2023, 1, 3), 40, 50, 60),
+      // TimeSeriesData(DateTime(2023, 1, 4), 45, 55, 65),
+      // TimeSeriesData(DateTime(2023, 1, 5), 50, 60, 70),
+    ];
+    Timer? _timer;
+
+  void initState() {
+    super.initState();
+    Timer.periodic(Duration(microseconds: 500), (timer) {
+      if (mounted) {
+        // Check if widget is still mounted
+        setState(() {
+          if (Provider.of<InitialDurationProvider>(context, listen: false)
+              .handleStartStop) {
+            updatelinegraph();
+            index += 1;
+          } else {
+            linegraph();
+          }
+        });
+      }
+    });
+  }
+
+  final Random random = Random();
+
+  double _getRandomInt(int min, int max) {
+    return (min + random.nextInt(max - min)) as double;
+  }
+
+  /// Method to update the chart data.
+
+  List<TimeSeriesData> updatelinegraph() {
+    setState(() {
+      if (chartData.length <= 6) {
+        chartData.add(
+          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
+              _getRandomInt(20, 80), _getRandomInt(30, 90)),
+        );
+      } else {
+        chartData.removeAt(0);
+        chartData.add(
+          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
+              _getRandomInt(20, 80), _getRandomInt(30, 90)),
+        );
+      }
+    });
+    return chartData;
+  }
+
+  List<TimeSeriesData> linegraph() {
+    return chartData;
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancel timer in dispose
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
-    final List<TimeSeriesData> chartData = [
-      TimeSeriesData(DateTime(2023, 1, 1), 30, 40, 50),
-      TimeSeriesData(DateTime(2023, 1, 2), 35, 45, 55),
-      TimeSeriesData(DateTime(2023, 1, 3), 40, 50, 60),
-      TimeSeriesData(DateTime(2023, 1, 4), 45, 55, 65),
-      TimeSeriesData(DateTime(2023, 1, 5), 50, 60, 70),
-    ];
+    
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    
     return Container(
-      width: width * 0.25,
-      height: height * 0.4,
+      width: width * 0.35,
+      height: height * 0.5,
       child: SfCartesianChart(
-        primaryXAxis: DateTimeAxis(),
-        primaryYAxis: NumericAxis(),
+        primaryXAxis: DateTimeAxis(
+          title: AxisTitle(text: 'time in minutes'),
+        ),
+        primaryYAxis: NumericAxis(
+          title: AxisTitle(text: 'Spindle power in kWh')
+        ),
         legend: Legend(isVisible: true),
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <ChartSeries>[
@@ -85,7 +176,9 @@ class _LineGraphState extends State<LineGraph> {
 }
 
 class CircularGraph extends StatefulWidget {
-  const CircularGraph({super.key});
+  final String text; // Add a parameter to accept a string
+
+  const CircularGraph({Key? key, required this.text}) : super(key: key);
 
   @override
   State<CircularGraph> createState() => _CircularGraphState();
@@ -104,10 +197,23 @@ class _CircularGraphState extends State<CircularGraph> {
       setState(() {
         final random = Random();
         _cirvalue1 = 0.69 + (random.nextDouble() * (0.72 - 0.69));
-        _cirvalue2 = 0.29 + (random.nextDouble() * (0.32 - 0.29));
-        _cirvalue3 = 0.49 + (random.nextDouble() * (0.52 - 0.49));
+        _cirvalue2 = 0.1 + (random.nextDouble() * (0.32 - 0.29));
+        _cirvalue3 = 0.025 + (random.nextDouble() * (0.52 - 0.49));
       });
     });
+  }
+
+  double _getValueBasedOnText(String text) {
+    switch (text) {
+      case 'V':
+        return _cirvalue1;
+      case 'A':
+        return _cirvalue2;
+      case 'kWh':
+        return _cirvalue3;
+      default:
+        return _cirvalue1; // Default to value1 if text doesn't match
+    }
   }
 
   @override
@@ -121,10 +227,10 @@ class _CircularGraphState extends State<CircularGraph> {
       lineWidth: 15.0,
       percent: Provider.of<InitialDurationProvider>(context, listen: false)
               .handleStartStop
-          ? _cirvalue1
+          ? _getValueBasedOnText(widget.text)
           : 0.7,
       center: Text(
-        "${(100 * (Provider.of<InitialDurationProvider>(context, listen: false).handleStartStop ? _cirvalue1 : 0.7)).toInt()} °C",
+         "${(415 * (Provider.of<InitialDurationProvider>(context, listen: false).handleStartStop ? _getValueBasedOnText(widget.text) : 0.7)).toInt()} ${widget.text}",
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16,

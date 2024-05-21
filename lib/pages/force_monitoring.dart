@@ -21,6 +21,8 @@ class ForceMonitoring extends StatefulWidget {
 class _ForceMonitoringState extends State<ForceMonitoring> {
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly  ,
       children: [
@@ -28,7 +30,18 @@ class _ForceMonitoringState extends State<ForceMonitoring> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            CircularGraph(),
+            // Row(
+            //   children: [
+
+            //   ],
+            // ),
+            Column(
+              children: [
+                CircularGraph(),
+                SizedBox(height: height * 0.02,),
+                Text('Spindle (F) Bearing in Newton')
+              ],
+            ),
             LineGraph(),
           ],
         ),
@@ -36,7 +49,13 @@ class _ForceMonitoringState extends State<ForceMonitoring> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            CircularGraph(),
+            Column(
+              children: [
+                CircularGraph(),
+                SizedBox(height: height * 0.02,),
+                Text('Spindle (R) Bearing in Newton')
+              ],
+            ),
             LineGraph(),
           ],
         ),
@@ -62,22 +81,85 @@ class LineGraph extends StatefulWidget {
 }
 
 class _LineGraphState extends State<LineGraph> {
+  int index = 0;
+  final List<TimeSeriesData> chartData = [
+      // TimeSeriesData(DateTime(2023, 1, 1), 30, 40, 50),
+      // TimeSeriesData(DateTime(2023, 1, 2), 35, 45, 55),
+      // TimeSeriesData(DateTime(2023, 1, 3), 40, 50, 60),
+      // TimeSeriesData(DateTime(2023, 1, 4), 45, 55, 65),
+      // TimeSeriesData(DateTime(2023, 1, 5), 50, 60, 70),
+    ];
+  Timer? _timer;
+
+  void initState() {
+    super.initState();
+    Timer.periodic(Duration(microseconds: 500), (timer) {
+      if (mounted) {
+        // Check if widget is still mounted
+        setState(() {
+          if (Provider.of<InitialDurationProvider>(context, listen: false)
+              .handleStartStop) {
+            updatelinegraph();
+            index += 1;
+          } else {
+            linegraph();
+          }
+        });
+      }
+    });
+  }
+
+  final Random random = Random();
+
+  double _getRandomInt(int min, int max) {
+    return (min + random.nextInt(max - min)) as double;
+  }
+
+  /// Method to update the chart data.
+
+  List<TimeSeriesData> updatelinegraph() {
+    setState(() {
+      if (chartData.length <= 6) {
+        chartData.add(
+          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
+              _getRandomInt(20, 80), _getRandomInt(30, 90)),
+        );
+      } else {
+        chartData.removeAt(0);
+        chartData.add(
+          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
+              _getRandomInt(20, 80), _getRandomInt(30, 90)),
+        );
+      }
+    });
+    return chartData;
+  }
+
+  List<TimeSeriesData> linegraph() {
+    return chartData;
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancel timer in dispose
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
-    final List<TimeSeriesData> chartData = [
-      TimeSeriesData(DateTime(2023, 1, 1), 30, 40, 50),
-      TimeSeriesData(DateTime(2023, 1, 2), 35, 45, 55),
-      TimeSeriesData(DateTime(2023, 1, 3), 40, 50, 60),
-      TimeSeriesData(DateTime(2023, 1, 4), 45, 55, 65),
-      TimeSeriesData(DateTime(2023, 1, 5), 50, 60, 70),
-    ];
+    
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    
     return Container(
-      width: width * 0.25,
+      width: width * 0.30,
+      height: height * 0.4,
       child: SfCartesianChart(
-        primaryXAxis: DateTimeAxis(),
-        primaryYAxis: NumericAxis(),
+        primaryXAxis: DateTimeAxis(
+          title: AxisTitle(text: 'time in min')
+        ),
+        primaryYAxis: NumericAxis(
+          title: AxisTitle(text: 'Spindle power in Newton (N)')
+        ),
         legend: Legend(isVisible: true),
         tooltipBehavior: TooltipBehavior(enable: true),
         series: <ChartSeries>[
@@ -95,7 +177,6 @@ class _LineGraphState extends State<LineGraph> {
     );
   }
 }
-
 class CircularGraph extends StatefulWidget {
   const CircularGraph({super.key});
 
@@ -136,7 +217,7 @@ class _CircularGraphState extends State<CircularGraph> {
           ? _cirvalue1
           : 0.7,
       center: Text(
-        "${(100 * (Provider.of<InitialDurationProvider>(context, listen: false).handleStartStop ? _cirvalue1 : 0.7)).toInt()} °C",
+        "${(100 * (Provider.of<InitialDurationProvider>(context, listen: false).handleStartStop ? _cirvalue1 : 0.7)).toInt()} N",
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16,
