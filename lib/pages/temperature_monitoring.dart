@@ -31,7 +31,9 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
           children: [
             Column(
               children: [
-                CircularGraph(),
+                CircularGraph(
+                  initialValue: 'spindlefront',
+                ),
                 SizedBox(
                   height: height * 0.01,
                 ),
@@ -54,7 +56,9 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                LineGraph(),
+                LineGraph(
+                  initialValue: 'spindlefront',
+                ),
                 Text('time in min')
               ],
             ),
@@ -66,7 +70,9 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
           children: [
             Column(
               children: [
-                CircularGraph(),
+                CircularGraph(
+                  initialValue: 'spindlerear',
+                ),
                 SizedBox(
                   height: height * 0.01,
                 ),
@@ -87,7 +93,9 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                LineGraph(),
+                LineGraph(
+                  initialValue: 'spindlerear',
+                ),
                 Text('time in min')
               ],
             ),
@@ -99,7 +107,9 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
           children: [
             Column(
               children: [
-                CircularGraph(),
+                CircularGraph(
+                  initialValue: 'coolantinlet',
+                ),
                 SizedBox(
                   height: height * 0.01,
                 ),
@@ -120,7 +130,9 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                LineGraph(),
+                LineGraph(
+                  initialValue: 'coolantinlet',
+                ),
                 Text('Temperature in °C'),
               ],
             ),
@@ -132,7 +144,9 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
           children: [
             Column(
               children: [
-                CircularGraph(),
+                CircularGraph(
+                  initialValue: 'coolantoutlet',
+                ),
                 SizedBox(
                   height: height * 0.01,
                 ),
@@ -153,7 +167,9 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                LineGraph(),
+                LineGraph(
+                  initialValue: 'coolantoutlet',
+                ),
                 Text('Temperature in °C')
               ],
             ),
@@ -166,16 +182,16 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
 }
 
 class TimeSeriesData {
-  TimeSeriesData(this.time, this.value1, this.value2, this.value3);
+  TimeSeriesData(this.time, this.value1);
 
   final DateTime time;
   final double value1;
-  final double value2;
-  final double value3;
+  
 }
 
 class LineGraph extends StatefulWidget {
-  const LineGraph({super.key});
+  final String initialValue;
+  const LineGraph({super.key, required this.initialValue});
 
   @override
   State<LineGraph> createState() => _LineGraphState();
@@ -221,18 +237,104 @@ class _LineGraphState extends State<LineGraph> {
 
   List<TimeSeriesData> updatelinegraph() {
     setState(() {
-      if (chartData.length <= 6) {
-        chartData.add(
-          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
-              _getRandomInt(20, 80), _getRandomInt(30, 90)),
-        );
-      } else {
-        chartData.removeAt(0);
-        chartData.add(
-          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
-              _getRandomInt(20, 80), _getRandomInt(30, 90)),
-        );
+      switch (widget.initialValue) {
+        case 'spindlefront':
+          {
+            if (chartData.length <= 6) {
+              chartData.add(
+                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(48, 52),
+                    ),
+              );
+            } else {
+              chartData.removeAt(0);
+              chartData.add(
+                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(48, 52),
+                    ),
+              );
+            }
+          }
+          break;
+
+        case 'spindlerear':
+          {
+            if (chartData.length <= 6) {
+              chartData.add(
+                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(48, 52),
+                    ),
+              );
+            } else {
+              chartData.removeAt(0);
+              chartData.add(
+                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(48, 52),
+                    ),
+              );
+            }
+          }
+          break;
+
+        case 'coolantinlet':
+          {
+            if (chartData.length <= 6) {
+              chartData.add(
+                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(28, 32),
+                    ),
+              );
+            } else {
+              chartData.removeAt(0);
+              chartData.add(
+                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(28, 32),
+                    ),
+              );
+            }
+          }
+          break;
+
+        case 'coolantoutlet':
+          {
+            if (chartData.length <= 6) {
+              chartData.add(
+                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(44, 48),
+                    ),
+              );
+            } else {
+              chartData.removeAt(0);
+              chartData.add(
+                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(44, 48),
+                    ),
+              );
+            }
+          }
+          break;
+
+        default:
+          {
+            if (chartData.length <= 6) {
+              chartData.add(
+                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(0, 0),
+                    ),
+              );
+            } else {
+              chartData.removeAt(0);
+              chartData.add(
+                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(0, 0),
+                    ),
+              );
+            }
+          }
+          break;
       }
+      // if (chartData.length <= 6) {
+      //   chartData.add(
+      //     TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(0, 1),
+      //         ),
+      //   );
+      // } else {
+      //   chartData.removeAt(0);
+      //   chartData.add(
+      //     TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(0, 1),
+      //         ),
+      //   );
+      // }
     });
     return chartData;
   }
@@ -275,16 +377,17 @@ class _LineGraphState extends State<LineGraph> {
 }
 
 class CircularGraph extends StatefulWidget {
-  const CircularGraph({super.key});
+  final String initialValue;
+  const CircularGraph({super.key, required this.initialValue});
 
   @override
   State<CircularGraph> createState() => _CircularGraphState();
 }
 
 class _CircularGraphState extends State<CircularGraph> {
-  double _cirvalue1 = 0.7; // Your initial value
-  double _cirvalue2 = 0.3;
-  double _cirvalue3 = 0.5;
+  double _cirvalue1 = 0.0; // Your initial value
+  // double _cirvalue2 = 0.0;
+  // double _cirvalue3 = 0.0;
 
   @override
   void initState() {
@@ -293,9 +396,40 @@ class _CircularGraphState extends State<CircularGraph> {
     Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         final random = Random();
-        _cirvalue1 = 0.69 + (random.nextDouble() * (0.72 - 0.69));
-        _cirvalue2 = 0.29 + (random.nextDouble() * (0.32 - 0.29));
-        _cirvalue3 = 0.49 + (random.nextDouble() * (0.52 - 0.49));
+        switch (widget.initialValue) {
+          case 'spindlefront':
+            {
+              _cirvalue1 = 0.49 + (random.nextDouble() * (0.52 - 0.49));
+            }
+            break;
+
+          case 'spindlerear':
+            {
+              _cirvalue1 = 0.50 + (random.nextDouble() * (0.53 - 0.50));
+            }
+            break;
+
+          case 'coolantinlet':
+            {
+              _cirvalue1 = 0.29 + (random.nextDouble() * (0.32 - 0.29));
+            }
+            break;
+
+          case 'coolantoutlet':
+            {
+              _cirvalue1 = 0.44 + (random.nextDouble() * (0.48 - 0.44));
+            }
+            break;
+
+          default:
+            {
+              _cirvalue1 = 0;
+            }
+            break;
+        }
+
+        // _cirvalue2 = 0.29 + (random.nextDouble() * (0.32 - 0.29));
+        // _cirvalue3 = 0.49 + (random.nextDouble() * (0.52 - 0.49));
       });
     });
   }
@@ -312,9 +446,9 @@ class _CircularGraphState extends State<CircularGraph> {
       percent: Provider.of<InitialDurationProvider>(context, listen: false)
               .handleStartStop
           ? _cirvalue1
-          : 0.7,
+          : 0.0,
       center: Text(
-        "${(100 * (Provider.of<InitialDurationProvider>(context, listen: false).handleStartStop ? _cirvalue1 : 0.7)).toInt()} °C",
+        "${(100 * (Provider.of<InitialDurationProvider>(context, listen: false).handleStartStop ? _cirvalue1 : 0.0)).toInt()} °C",
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16,

@@ -17,6 +17,9 @@ class VibrationMonitoring extends StatefulWidget {
 
 class _VibrationMonitoringState extends State<VibrationMonitoring> {
   final Random random = Random();
+
+  num x1 = 0, x2 = 0, y1 = 0, y2 = 0, z1 = 0, z2 = 0;
+
   num _getRandomInt(int min, int max) {
     return min + random.nextInt(max - min);
   }
@@ -40,15 +43,21 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
     super.initState();
     _timer = Timer.periodic(Duration(seconds: 2), (timer) {
       setState(() {
+        x1 = _getRandomInt(5, 10);
+        y1 = _getRandomInt(3, 8);
+        z1 = _getRandomInt(1, 6);
+        x2 = _getRandomInt(5, 10);
+        y2 = _getRandomInt(3, 8);
+        z2 = _getRandomInt(1, 6);
         chartdata[0] = [
-          _ChartShaderData('X', _getRandomInt(5, 10), '100%'),
-          _ChartShaderData('Y', _getRandomInt(3, 8), '100%'),
-          _ChartShaderData('Z', _getRandomInt(1, 6), '100%'),
+          _ChartShaderData('X', x1, '100%'),
+          _ChartShaderData('Y', y1, '100%'),
+          _ChartShaderData('Z', z1, '100%'),
         ];
         chartdata[1] = [
-          _ChartShaderData('X', _getRandomInt(5, 10), '100%'),
-          _ChartShaderData('Y', _getRandomInt(3, 8), '100%'),
-          _ChartShaderData('Z', _getRandomInt(1, 6), '100%'),
+          _ChartShaderData('X', x2, '100%'),
+          _ChartShaderData('Y', y2, '100%'),
+          _ChartShaderData('Z', z2, '100%'),
         ];
       });
       // Call your function here
@@ -65,68 +74,160 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    // return Column(
-    //   mainAxisAlignment: MainAxisAlignment.center,
-    //   children: [
-    //     Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //       children: [
-    //         for (var data in chartdata)
-    //           RadialWdget(
-    //             radialchartdata: data,
-    //           ),
-    //       ],
-    //     ),
-    //     Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    //       children: [LineGraph(), LineGraph()],
-    //     )
-    //   ],
-    // );
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Row(
+                children: [
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          RadialWdget(
+                            radialchartdata: chartdata[0],
+                          ),
+                        ],
+                      ),
+                      Text('Vibration Level in mm/sec (rms)'),
+                      SizedBox(
+                        height: height * 0.01,
+                      ),
+                      Text(
+                        'Spindle (F)',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  limitwidget(height, width, 1)
+                ],
+              ),
+              Column(
+                children: [LineGraph(), Text('time in min')],
+              )
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Row(
+                children: [
+                  Row(
+                    children: [
+                      Column(
+                        children: [
+                          RadialWdget(
+                            radialchartdata: chartdata[1],
+                          ),
+                          Text('Vibration Level in mm/sec (rms) '),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Text(
+                            'Spindle (R)',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      limitwidget(height, width, 2)
+                    ],
+                  ),
+                ],
+              ),
+              Column(
+                children: [LineGraph(), Text('time in min')],
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget limitwidget(height, width, selectioninteger) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              children: [
-                RadialWdget(
-                  radialchartdata: chartdata[0],
-                ),
-                Text('Vibration Level in mm/sec (rms)'),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                Text('Spindle (F)',style: TextStyle(fontWeight: FontWeight.bold),),
-              ],
-            ),
-            Column(
-              children: [LineGraph(), Text('time in min')],
-            )
-          ],
+        Container(
+          height: height * 0.1,
+          width: width * 0.25,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: width * 0.015,
+                    height: height * 0.015,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.green, // Replace with your desired color
+                    ),
+                  ),
+                  Text(' -- ', overflow: TextOverflow.fade),
+                  Text('Good (0 - 1.5 mm/sec)', overflow: TextOverflow.fade)
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: width * 0.015,
+                    height: height * 0.015,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.yellow, // Replace with your desired color
+                    ),
+                  ),
+                  Text(' -- ', overflow: TextOverflow.fade),
+                  Text('Tolerable (1.5 - 2.5 mm/sec)', overflow: TextOverflow.fade)
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
+                    width: width * 0.015,
+                    height: height * 0.015,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.red, // Replace with your desired color
+                    ),
+                  ),
+                  Text(' -- ', overflow: TextOverflow.fade),
+                  Text('Not Tolerable (2.5 - 5 mm/sec)', overflow: TextOverflow.fade)
+                ],
+              )
+            ],
+          ),
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              children: [
-                RadialWdget(
-                  radialchartdata: chartdata[1],
-                ),
-                Text('Vibration Level in mm/sec (rms)'),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                Text('Spindle (R)',style: TextStyle(fontWeight: FontWeight.bold),),
-              ],
-            ),
-            Column(
-              children: [
-                // Text('Spindle (R)',style: TextStyle(fontWeight: FontWeight.bold),),
-                LineGraph(), Text('time in min')],
-            )
-          ],
+        
+        Container(
+          height: height * 0.1,
+          width: width * 0.1,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [Text('X',style: TextStyle(fontWeight: FontWeight.bold),), Text('${x1/2} mm/sec')],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [Text('Y',style: TextStyle(fontWeight: FontWeight.bold),), Text('${y1/2} mm/sec')],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [Text('Z',style: TextStyle(fontWeight: FontWeight.bold),), Text('${z1/2} mm/sec')],
+              )
+            ],
+          ),
         )
       ],
     );
@@ -183,8 +284,6 @@ class _LineGraphState extends State<LineGraph> {
     return (min + random.nextInt(max - min)) as double;
   }
 
-  /// Method to update the chart data.
-
   List<TimeSeriesData> updatelinegraph() {
     setState(() {
       if (chartData.length <= 6) {
@@ -219,7 +318,7 @@ class _LineGraphState extends State<LineGraph> {
     double height = MediaQuery.of(context).size.height;
 
     return Container(
-      width: width * 0.25,
+      width: width * 0.35,
       child: SfCartesianChart(
         primaryXAxis: DateTimeAxis(title: AxisTitle()),
         primaryYAxis:
@@ -254,79 +353,6 @@ class _LineGraphState extends State<LineGraph> {
   }
 }
 
-// class LineGraph extends StatefulWidget {
-//   const LineGraph({super.key});
-
-//   @override
-//   State<LineGraph> createState() => _LineGraphState();
-// }
-
-// class _LineGraphState extends State<LineGraph> {
-//   @override
-//   Widget build(BuildContext context) {
-//     bool thc1_pressed = false;
-//     bool thc2_pressed = false;
-
-//     double _value1 = 0.0;
-//     double _value2 = 12.0;
-//     int index = 0;
-//     List<ChartSampleData> chartData = <ChartSampleData>[
-//       // ChartSampleData(x: 1, y: 30),
-//       // ChartSampleData(x: 3, y: 13),
-//       // ChartSampleData(x: 5, y: 80),
-//       // ChartSampleData(x: 7, y: 30),
-//       // ChartSampleData(x: 9, y: 72)
-//     ];
-//     final Random random = Random();
-
-//     /// Method to update the chart data.
-
-//     num _getRandomInt(int min, int max) {
-//       return min + random.nextInt(max - min);
-//     }
-
-//     List<ChartSampleData> updatelinegraph() {
-//       setState(() {
-//         if (chartData.length <= 6) {
-//           chartData.add(ChartSampleData(index, _getRandomInt(10, 100)));
-//         } else {
-//           chartData.removeAt(0);
-//           chartData.add(ChartSampleData(index, _getRandomInt(10, 100)));
-//         }
-//       });
-//       return chartData;
-//     }
-
-//     List<ChartSampleData> linegraph() {
-//       return chartData;
-//     }
-
-//     Timer.periodic(Duration(seconds: 1), (timer) {
-//       setState(() {
-//         if (Provider.of<InitialDurationProvider>(context, listen: false)
-//             .handleStartStop) {
-//           updatelinegraph();
-//           index += 1;
-//         } else {
-//           linegraph();
-//         }
-//       });
-//       // Call your function here
-//     });
-//     return SfCartesianChart(
-//       primaryXAxis: NumericAxis(),
-//       primaryYAxis: NumericAxis(),
-//       series: <LineSeries<ChartSampleData, num>>[
-//         LineSeries<ChartSampleData, num>(
-//             dataSource: chartData,
-//             xValueMapper: (ChartSampleData data, _) => data.x,
-//             yValueMapper: (ChartSampleData data, _) => data.y,
-//             dataLabelSettings: DataLabelSettings(isVisible: true)),
-//       ],
-//     );
-//   }
-// }
-
 class TimeSeriesData {
   TimeSeriesData(this.time, this.value1, this.value2, this.value3);
 
@@ -350,7 +376,7 @@ class RadialWdget extends StatefulWidget {
 
 class _RadialWdgetState extends State<RadialWdget> {
   final List<Color> colors = const [Colors.green, Colors.yellow, Colors.red];
-  final List<double> stops = const [0.2, 0.4, 0.9];
+  final List<double> stops = const [0.30, 0.50, 0.9];
   final TooltipBehavior tooltipBehavior =
       TooltipBehavior(enable: true, format: 'point.x : point.y');
 
@@ -378,7 +404,7 @@ class _RadialWdgetState extends State<RadialWdget> {
       List<_ChartShaderData> data) {
     return <RadialBarSeries<_ChartShaderData, String>>[
       RadialBarSeries<_ChartShaderData, String>(
-        maximumValue: 15,
+        maximumValue: 10,
         dataLabelSettings: const DataLabelSettings(
             isVisible: true, textStyle: TextStyle(fontSize: 10.0)),
         dataSource: data,
