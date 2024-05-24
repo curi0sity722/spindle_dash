@@ -8,7 +8,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
+import 'package:intl/intl.dart';
 import '../provider/user_provider.dart';
 
 class EnergyMonitoring extends StatefulWidget {
@@ -118,13 +118,13 @@ class _LineGraphState extends State<LineGraph> {
     setState(() {
       if (chartData.length <= 6) {
         chartData.add(
-          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
+          TimeSeriesData(DateTime.now(), _getRandomInt(10, 70),
               _getRandomInt(20, 80), _getRandomInt(30, 90)),
         );
       } else {
         chartData.removeAt(0);
         chartData.add(
-          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
+          TimeSeriesData(DateTime.now(), _getRandomInt(10, 70),
               _getRandomInt(20, 80), _getRandomInt(30, 90)),
         );
       }
@@ -152,7 +152,8 @@ class _LineGraphState extends State<LineGraph> {
       height: height * 0.5,
       child: SfCartesianChart(
         primaryXAxis: DateTimeAxis(
-          title: AxisTitle(text: 'time in minutes'),
+          dateFormat: DateFormat.Hms(),
+          title: AxisTitle(text: 'time in sec'),
         ),
         primaryYAxis: NumericAxis(
           title: AxisTitle(text: 'Spindle power in kWh')

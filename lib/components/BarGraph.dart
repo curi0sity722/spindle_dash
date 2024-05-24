@@ -28,7 +28,7 @@ class BarGraphState extends State<BarGraph> {
     List<ChartData> data = [];
     Random random = Random();
 
-    for (int i = 0; i < 100; i++) {
+    for (double i = 0.5; i < 100; i++) {
       double x = (i / 100) * 1000;
       double y = random.nextDouble() * 10;
       data.add(ChartData(x, y));

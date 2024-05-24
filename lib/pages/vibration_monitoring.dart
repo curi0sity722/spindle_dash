@@ -7,6 +7,7 @@ import 'dart:ui' as ui;
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:provider/provider.dart';
 import 'package:spindle_dash/provider/user_provider.dart';
+import 'package:intl/intl.dart' as datetimeformat;
 
 class VibrationMonitoring extends StatefulWidget {
   const VibrationMonitoring({super.key});
@@ -26,14 +27,14 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
 
   List<List<_ChartShaderData>> chartdata = [
     [
-      _ChartShaderData('X', 10, '100%'),
-      _ChartShaderData('Y', 11, '100%'),
-      _ChartShaderData('Z', 12, '100%'),
+      _ChartShaderData('X', 0, '100%'),
+      _ChartShaderData('Y', 0, '100%'),
+      _ChartShaderData('Z', 0, '100%'),
     ],
     [
-      _ChartShaderData('X', 10, '100%'),
-      _ChartShaderData('Y', 11, '100%'),
-      _ChartShaderData('Z', 12, '100%'),
+      _ChartShaderData('X', 0, '100%'),
+      _ChartShaderData('Y', 0, '100%'),
+      _ChartShaderData('Z', 0, '100%'),
     ],
   ];
 
@@ -43,12 +44,12 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
     super.initState();
     _timer = Timer.periodic(Duration(seconds: 2), (timer) {
       setState(() {
-        x1 = _getRandomInt(5, 10);
-        y1 = _getRandomInt(3, 8);
-        z1 = _getRandomInt(1, 6);
-        x2 = _getRandomInt(5, 10);
-        y2 = _getRandomInt(3, 8);
-        z2 = _getRandomInt(1, 6);
+        x1 = _getRandomInt(1, 5);
+        y1 = _getRandomInt(1, 5);
+        z1 = _getRandomInt(1, 5);
+        x2 = _getRandomInt(1, 5);
+        y2 = _getRandomInt(1, 5);
+        z2 = _getRandomInt(1, 5);
         chartdata[0] = [
           _ChartShaderData('X', x1, '100%'),
           _ChartShaderData('Y', y1, '100%'),
@@ -103,11 +104,11 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
                       ),
                     ],
                   ),
-                  limitwidget(height, width, 1)
+                  limitwidget(height, width, true)
                 ],
               ),
               Column(
-                children: [LineGraph(), Text('time in min')],
+                children: [LineGraph()],
               )
             ],
           ),
@@ -133,13 +134,13 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
                           ),
                         ],
                       ),
-                      limitwidget(height, width, 2)
+                      limitwidget(height, width, false)
                     ],
                   ),
                 ],
               ),
               Column(
-                children: [LineGraph(), Text('time in min')],
+                children: [LineGraph()],
               )
             ],
           )
@@ -149,6 +150,16 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
   }
 
   Widget limitwidget(height, width, selectioninteger) {
+    Color getcolor(value) {
+      if (value <= 1.5) {
+        return Colors.green;
+      } else if (value > 1.5 && value < 2.5) {
+        return Colors.yellow.shade700;
+      } else {
+        return Colors.red;
+      }
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -171,7 +182,7 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
                     ),
                   ),
                   Text(' -- ', overflow: TextOverflow.fade),
-                  Text('Good (0 - 1.5 mm/sec)', overflow: TextOverflow.fade)
+                  Text('Good', overflow: TextOverflow.fade)
                 ],
               ),
               Row(
@@ -185,7 +196,7 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
                     ),
                   ),
                   Text(' -- ', overflow: TextOverflow.fade),
-                  Text('Tolerable (1.5 - 2.5 mm/sec)', overflow: TextOverflow.fade)
+                  Text('Tolerable', overflow: TextOverflow.fade)
                 ],
               ),
               Row(
@@ -199,13 +210,12 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
                     ),
                   ),
                   Text(' -- ', overflow: TextOverflow.fade),
-                  Text('Not Tolerable (2.5 - 5 mm/sec)', overflow: TextOverflow.fade)
+                  Text('Not Tolerable', overflow: TextOverflow.fade)
                 ],
               )
             ],
           ),
         ),
-        
         Container(
           height: height * 0.1,
           width: width * 0.1,
@@ -213,18 +223,47 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [Text('X',style: TextStyle(fontWeight: FontWeight.bold),), Text('${x1/2} mm/sec')],
+                children: [
+                  Text(
+                    'X',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    '${selectioninteger ? x1 : x2} mm/sec',
+                    style:
+                        TextStyle(color: getcolor(selectioninteger ? x1 : x2)),
+                  )
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [Text('Y',style: TextStyle(fontWeight: FontWeight.bold),), Text('${y1/2} mm/sec')],
+                children: [
+                  Text(
+                    'Y',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    '${selectioninteger ? y1 : y2} mm/sec',
+                    style:
+                        TextStyle(color: getcolor(selectioninteger ? y1 : y2)),
+                  )
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [Text('Z',style: TextStyle(fontWeight: FontWeight.bold),), Text('${z1/2} mm/sec')],
+                children: [
+                  Text(
+                    'Z',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    '${selectioninteger ? z1 : z2} mm/sec',
+                    style:
+                        TextStyle(color: getcolor(selectioninteger ? z1 : z2)),
+                  )
+                ],
               )
             ],
           ),
@@ -288,13 +327,13 @@ class _LineGraphState extends State<LineGraph> {
     setState(() {
       if (chartData.length <= 6) {
         chartData.add(
-          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
+          TimeSeriesData(DateTime.now(), _getRandomInt(10, 70),
               _getRandomInt(20, 80), _getRandomInt(30, 90)),
         );
       } else {
         chartData.removeAt(0);
         chartData.add(
-          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
+          TimeSeriesData(DateTime.now(), _getRandomInt(10, 70),
               _getRandomInt(20, 80), _getRandomInt(30, 90)),
         );
       }
@@ -320,7 +359,10 @@ class _LineGraphState extends State<LineGraph> {
     return Container(
       width: width * 0.35,
       child: SfCartesianChart(
-        primaryXAxis: DateTimeAxis(title: AxisTitle()),
+        primaryXAxis: DateTimeAxis(
+          dateFormat: datetimeformat.DateFormat.Hms(),
+          title: AxisTitle(text: 'time in sec'),
+        ),
         primaryYAxis:
             NumericAxis(title: AxisTitle(text: 'Vibration level in mm/sec')),
         legend: Legend(isVisible: true),
@@ -404,7 +446,7 @@ class _RadialWdgetState extends State<RadialWdget> {
       List<_ChartShaderData> data) {
     return <RadialBarSeries<_ChartShaderData, String>>[
       RadialBarSeries<_ChartShaderData, String>(
-        maximumValue: 10,
+        maximumValue: 5,
         dataLabelSettings: const DataLabelSettings(
             isVisible: true, textStyle: TextStyle(fontSize: 10.0)),
         dataSource: data,

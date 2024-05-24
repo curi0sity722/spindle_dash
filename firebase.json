@@ -1,0 +1,14 @@
+{
+  "hosting": {
+    "site": "spindle-dashboard",
+    "source": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "frameworksBackend": {
+      "region": "asia-east1"
+    }
+  }
+}

@@ -8,6 +8,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:intl/intl.dart';
 
 import '../provider/user_provider.dart';
 
@@ -39,10 +40,10 @@ class _ForceMonitoringState extends State<ForceMonitoring> {
               children: [
                 CircularGraph(),
                 SizedBox(height: height * 0.02,),
-                Text('Spindle (F) Bearing in Newton')
+                Text('Force at Spindle(F) in Newton')
               ],
             ),
-            LineGraph(),
+            LineGraph(yaxistitle: 'Force at Spindle (F) in Newtons'),
           ],
         ),
         Column(
@@ -53,10 +54,10 @@ class _ForceMonitoringState extends State<ForceMonitoring> {
               children: [
                 CircularGraph(),
                 SizedBox(height: height * 0.02,),
-                Text('Spindle (R) Bearing in Newton')
+                Text('Force at Spindle(R) in Newton')
               ],
             ),
-            LineGraph(),
+            LineGraph(yaxistitle: 'Force at Spindle (R) in Newtons',),
           ],
         ),
       ],
@@ -74,7 +75,8 @@ class TimeSeriesData {
 }
 
 class LineGraph extends StatefulWidget {
-  const LineGraph({super.key});
+  String yaxistitle;
+  LineGraph({super.key,required this.yaxistitle,});
 
   @override
   State<LineGraph> createState() => _LineGraphState();
@@ -82,6 +84,7 @@ class LineGraph extends StatefulWidget {
 
 class _LineGraphState extends State<LineGraph> {
   int index = 0;
+  var formatterTime = DateFormat('kk:mm');
   final List<TimeSeriesData> chartData = [
       // TimeSeriesData(DateTime(2023, 1, 1), 30, 40, 50),
       // TimeSeriesData(DateTime(2023, 1, 2), 35, 45, 55),
@@ -121,13 +124,13 @@ class _LineGraphState extends State<LineGraph> {
     setState(() {
       if (chartData.length <= 6) {
         chartData.add(
-          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
+          TimeSeriesData(DateTime.now(), _getRandomInt(10, 70),
               _getRandomInt(20, 80), _getRandomInt(30, 90)),
         );
       } else {
         chartData.removeAt(0);
         chartData.add(
-          TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(10, 70),
+          TimeSeriesData(DateTime.now(), _getRandomInt(10, 70),
               _getRandomInt(20, 80), _getRandomInt(30, 90)),
         );
       }
@@ -155,10 +158,11 @@ class _LineGraphState extends State<LineGraph> {
       height: height * 0.4,
       child: SfCartesianChart(
         primaryXAxis: DateTimeAxis(
-          title: AxisTitle(text: 'time in min')
+          dateFormat: DateFormat.Hms(),
+          title: AxisTitle(text: 'time in seconds')
         ),
         primaryYAxis: NumericAxis(
-          title: AxisTitle(text: 'Spindle power in Newton (N)')
+          title: AxisTitle(text: widget.yaxistitle)
         ),
         legend: Legend(isVisible: true),
         tooltipBehavior: TooltipBehavior(enable: true),

@@ -7,7 +7,7 @@ import 'dart:math';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
+import 'package:intl/intl.dart';
 import '../provider/user_provider.dart';
 
 class Temperature_monitoring extends StatefulWidget {
@@ -59,7 +59,7 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
                 LineGraph(
                   initialValue: 'spindlefront',
                 ),
-                Text('time in min')
+                
               ],
             ),
           ],
@@ -96,7 +96,7 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
                 LineGraph(
                   initialValue: 'spindlerear',
                 ),
-                Text('time in min')
+               
               ],
             ),
           ],
@@ -133,7 +133,7 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
                 LineGraph(
                   initialValue: 'coolantinlet',
                 ),
-                Text('Temperature in °C'),
+                
               ],
             ),
           ],
@@ -170,7 +170,7 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
                 LineGraph(
                   initialValue: 'coolantoutlet',
                 ),
-                Text('Temperature in °C')
+                
               ],
             ),
             // Image.asset('assets/cmti.jpg'),
@@ -242,13 +242,13 @@ class _LineGraphState extends State<LineGraph> {
           {
             if (chartData.length <= 6) {
               chartData.add(
-                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(48, 52),
+                TimeSeriesData(DateTime.now(), _getRandomInt(48, 52),
                     ),
               );
             } else {
               chartData.removeAt(0);
               chartData.add(
-                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(48, 52),
+                TimeSeriesData(DateTime.now(), _getRandomInt(48, 52),
                     ),
               );
             }
@@ -259,13 +259,13 @@ class _LineGraphState extends State<LineGraph> {
           {
             if (chartData.length <= 6) {
               chartData.add(
-                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(48, 52),
+                TimeSeriesData(DateTime.now(), _getRandomInt(48, 52),
                     ),
               );
             } else {
               chartData.removeAt(0);
               chartData.add(
-                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(48, 52),
+                TimeSeriesData(DateTime.now(), _getRandomInt(48, 52),
                     ),
               );
             }
@@ -276,13 +276,13 @@ class _LineGraphState extends State<LineGraph> {
           {
             if (chartData.length <= 6) {
               chartData.add(
-                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(28, 32),
+                TimeSeriesData(DateTime.now(), _getRandomInt(28, 32),
                     ),
               );
             } else {
               chartData.removeAt(0);
               chartData.add(
-                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(28, 32),
+                TimeSeriesData(DateTime.now(), _getRandomInt(28, 32),
                     ),
               );
             }
@@ -293,13 +293,13 @@ class _LineGraphState extends State<LineGraph> {
           {
             if (chartData.length <= 6) {
               chartData.add(
-                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(44, 48),
+                TimeSeriesData(DateTime.now(), _getRandomInt(44, 48),
                     ),
               );
             } else {
               chartData.removeAt(0);
               chartData.add(
-                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(44, 48),
+                TimeSeriesData(DateTime.now(), _getRandomInt(44, 48),
                     ),
               );
             }
@@ -310,13 +310,13 @@ class _LineGraphState extends State<LineGraph> {
           {
             if (chartData.length <= 6) {
               chartData.add(
-                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(0, 0),
+                TimeSeriesData(DateTime.now(), _getRandomInt(0, 0),
                     ),
               );
             } else {
               chartData.removeAt(0);
               chartData.add(
-                TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(0, 0),
+                TimeSeriesData(DateTime.now(), _getRandomInt(0, 0),
                     ),
               );
             }
@@ -325,13 +325,13 @@ class _LineGraphState extends State<LineGraph> {
       }
       // if (chartData.length <= 6) {
       //   chartData.add(
-      //     TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(0, 1),
+      //     TimeSeriesData(DateTime.now(), _getRandomInt(0, 1),
       //         ),
       //   );
       // } else {
       //   chartData.removeAt(0);
       //   chartData.add(
-      //     TimeSeriesData(DateTime(2023, 1, index), _getRandomInt(0, 1),
+      //     TimeSeriesData(DateTime.now(), _getRandomInt(0, 1),
       //         ),
       //   );
       // }
@@ -357,7 +357,9 @@ class _LineGraphState extends State<LineGraph> {
     return Container(
       width: width * 0.25,
       child: SfCartesianChart(
-        primaryXAxis: DateTimeAxis(),
+        primaryXAxis: DateTimeAxis(
+          dateFormat: DateFormat.Hms(),
+          title: AxisTitle(text: 'Time in seconds')),
         primaryYAxis: NumericAxis(title: AxisTitle(text: 'Temperature in °C')),
         legend: Legend(isVisible: true),
         tooltipBehavior: TooltipBehavior(enable: true),
