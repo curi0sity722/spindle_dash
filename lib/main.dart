@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spindle_dash/pages/about_spindle.dart';
 import 'package:spindle_dash/pages/energy_monitoring.dart';
 import 'package:spindle_dash/pages/force_monitoring.dart';
+import 'package:spindle_dash/pages/switchtabspage.dart';
 import 'package:spindle_dash/pages/temperature_monitoring.dart';
 import 'package:spindle_dash/pages/vibration_analysis.dart';
 import 'package:spindle_dash/pages/vibration_monitoring.dart';
@@ -41,13 +43,9 @@ class _spindledashboardState extends State<spindledashboard>
     with TickerProviderStateMixin {
   late TabController _tabController;
   final List<Widget> _tabList = [
-    Tab(icon: Icon(Icons.vibration), text: 'Vibration Monitoring'),
-    Tab(icon: Icon(Icons.thermostat), text: 'Temperature Monitoring'),
-    Tab(icon: Icon(Icons.electrical_services), text: 'Energy Monitoring'),
-    Tab(icon: Icon(Icons.fitness_center), text: 'Force Monitoring'),
-    Tab(
-        icon: Icon(Icons.settings_accessibility),
-        text: 'Vibration Diagnostics'),
+    Tab(icon: Icon(Icons.perm_device_information), text: 'About Spindle'),
+    Tab(icon: Icon(Icons.health_and_safety), text: 'Health Monitoring'),
+    Tab(icon: Icon(Icons.analytics), text: 'Analysis and Diagnosis'),
   ];
 
   @override
@@ -80,19 +78,26 @@ class _spindledashboardState extends State<spindledashboard>
           ],
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(48.0), // Adjust height as needed
-          child: TabBar(
-            controller: _tabController,
-            isScrollable: true, // Enable scrolling if tabs overflow
-            labelColor: Colors.white, // Customize label color
-            unselectedLabelColor:
-                Colors.white54, // Customize unselected label color
-            indicator: BoxDecoration(
-              // Customize tab indicator
-              color: Colors.blue, // Change color
-              borderRadius: BorderRadius.circular(10.0), // Add border radius
-            ),
-            tabs: _tabList,
+          preferredSize: Size.fromHeight(45.0), // Adjust height as needed
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TabBar(
+                controller: _tabController,
+                isScrollable: true, // Enable scrolling if tabs overflow
+                labelColor: Colors.white, // Customize label color
+                unselectedLabelColor:
+                    Colors.white54, // Customize unselected label color
+                indicator: BoxDecoration(
+                  // Customize tab indicator
+                  color: Colors.blue, // Change color
+                  borderRadius:
+                      BorderRadius.circular(10.0), // Add border radius
+                ),
+                tabs: _tabList,
+              ),
+              // Text('CMTI')
+            ],
           ),
         ),
         actions: [
@@ -121,11 +126,9 @@ class _spindledashboardState extends State<spindledashboard>
       body: TabBarView(
         controller: _tabController,
         children: const [
-          Center(child: VibrationMonitoring()),
-          Center(child: Temperature_monitoring()),
-          Center(child: EnergyMonitoring()),
-          Center(child: ForceMonitoring()),
-          Center(child: VibrationAnalysis()),
+          Center(child: AboutSpindle()),
+          Center(child: Subswitcher1()),
+          Center(child: Subswitcher2()),
         ],
       ),
     );

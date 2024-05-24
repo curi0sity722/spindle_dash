@@ -22,161 +22,164 @@ class _Temperature_monitoringState extends State<Temperature_monitoring> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              children: [
-                CircularGraph(
-                  initialValue: 'spindlefront',
-                ),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                Text('Temperature in °C'),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                Text(
-                  'Spindle (F) Bearing',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                Text(
-                  'Spindle (F) Bearing Temperature',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                LineGraph(
-                  initialValue: 'spindlefront',
-                ),
-                
-              ],
-            ),
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              children: [
-                CircularGraph(
-                  initialValue: 'spindlerear',
-                ),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                Text('Temperature in °C'),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                Text('Spindle (R) Bearing',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-              ],
-            ),
-            Column(
-              children: [
-                Text(
-                  'Spindle (F) Bearing Temperature',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                LineGraph(
-                  initialValue: 'spindlerear',
-                ),
-               
-              ],
-            ),
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              children: [
-                CircularGraph(
-                  initialValue: 'coolantinlet',
-                ),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                Text('Temperature in °C'),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                Text('Coolant inlet',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-              ],
-            ),
-            Column(
-              children: [
-                Text(
-                  'Coolant inlet',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                LineGraph(
-                  initialValue: 'coolantinlet',
-                ),
-                
-              ],
-            ),
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Column(
-              children: [
-                CircularGraph(
-                  initialValue: 'coolantoutlet',
-                ),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                Text('Temperature in °C'),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                Text('Coolant outlet',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-              ],
-            ),
-            Column(
-              children: [
-                Text(
-                  'Coolant outlet',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                LineGraph(
-                  initialValue: 'coolantoutlet',
-                ),
-                
-              ],
-            ),
-            // Image.asset('assets/cmti.jpg'),
-          ],
-        )
-      ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                children: [
+                  CircularGraph(
+                    initialValue: 'spindlefront',
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Text('Temperature in °C'),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Text(
+                    'Spindle (F) Bearing',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    'Spindle (F) Bearing Temperature',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  LineGraph(
+                    initialValue: 'spindlefront',
+                  ),
+                  
+                ],
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                children: [
+                  CircularGraph(
+                    initialValue: 'spindlerear',
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Text('Temperature in °C'),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Text('Spindle (R) Bearing',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    'Spindle (F) Bearing Temperature',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  LineGraph(
+                    initialValue: 'spindlerear',
+                  ),
+                 
+                ],
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                children: [
+                  CircularGraph(
+                    initialValue: 'coolantinlet',
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Text('Temperature in °C'),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Text('Coolant inlet',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    'Coolant inlet',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  LineGraph(
+                    initialValue: 'coolantinlet',
+                  ),
+                  
+                ],
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                children: [
+                  CircularGraph(
+                    initialValue: 'coolantoutlet',
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Text('Temperature in °C'),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Text('Coolant outlet',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
+              ),
+              Column(
+                children: [
+                  Text(
+                    'Coolant outlet',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  LineGraph(
+                    initialValue: 'coolantoutlet',
+                  ),
+                  
+                ],
+              ),
+              // Image.asset('assets/cmti.jpg'),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
