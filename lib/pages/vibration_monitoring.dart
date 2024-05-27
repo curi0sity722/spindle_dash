@@ -76,23 +76,19 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      scrollDirection: Axis.vertical,
+      child: Column(
         children: [
-          Column(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          RadialWdget(
-                            radialchartdata: chartdata[0],
-                          ),
-                        ],
+                      RadialWdget(
+                        radialchartdata: chartdata[0],
                       ),
                       Text('Vibration Level in mm/sec (rms)'),
                       SizedBox(
@@ -107,42 +103,31 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
                   limitwidget(height, width, true)
                 ],
               ),
-              Column(
-                children: [LineGraph()],
-              )
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
               Row(
                 children: [
-                  Row(
+                  Column(
                     children: [
-                      Column(
-                        children: [
-                          RadialWdget(
-                            radialchartdata: chartdata[1],
-                          ),
-                          Text('Vibration Level in mm/sec (rms) '),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
-                          Text(
-                            'Spindle (R)',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
+                      RadialWdget(
+                        radialchartdata: chartdata[1],
                       ),
-                      limitwidget(height, width, false)
+                      Text('Vibration Level in mm/sec (rms) '),
+                      SizedBox(
+                        height: height * 0.01,
+                      ),
+                      Text(
+                        'Spindle (R)',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ],
                   ),
+                  limitwidget(height, width, false)
                 ],
               ),
-              Column(
-                children: [LineGraph()],
-              )
             ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [LineGraph(), LineGraph()],
           )
         ],
       ),
@@ -166,7 +151,7 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
       children: [
         Container(
           height: height * 0.1,
-          width: width * 0.25,
+          width: width * 0.1,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,7 +203,7 @@ class _VibrationMonitoringState extends State<VibrationMonitoring> {
         ),
         Container(
           height: height * 0.1,
-          width: width * 0.1,
+          width: width * 0.06,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,

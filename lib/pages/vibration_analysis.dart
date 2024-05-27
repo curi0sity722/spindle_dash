@@ -46,7 +46,7 @@ class _VibrationAnalysisState extends State<VibrationAnalysis> {
                 ),
                 Container(
                   width: width * 0.50,
-                  height: height * 0.4,
+                  height: height * 0.35,
                   // color: const Color.fromARGB(255, 255, 255, 255),
                   child: const SizedBox(
                     height: 300,
