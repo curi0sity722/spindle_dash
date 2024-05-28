@@ -189,7 +189,8 @@ class _AboutSpindleState extends State<AboutSpindle> {
                       cameraOrbit: "0deg 100deg 105%",
                       backgroundColor: Colors.white,
                       src:
-                          'assets/3dmodels/Spindle.gltf',
+                          'assets/images/Spindle.gltf',
+                      //  src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
                       alt: 'A 3D model of an astronaut',
                       ar: true,
                       autoRotate: true,
