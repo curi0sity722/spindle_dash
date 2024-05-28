@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import "dart:math";
+import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 class AboutSpindle extends StatefulWidget {
   const AboutSpindle({super.key});
@@ -84,6 +85,7 @@ class _AboutSpindleState extends State<AboutSpindle> {
       onHover: _updateLocation,
       onExit: _incrementExit,
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -102,7 +104,7 @@ class _AboutSpindleState extends State<AboutSpindle> {
                       Offset(width * 0.15, height * 0.03),
                       Offset(width * 0.2, height * 0.03),
                       sensorValues[0],
-                      'Accelerometer Spindle Front'),
+                      'Force Sensor (Spindle Front)'),
                 ),
                 CustomPaint(
                   painter: LinePainter(
@@ -110,15 +112,15 @@ class _AboutSpindleState extends State<AboutSpindle> {
                       Offset(width * 0.16, height * 0.06),
                       Offset(width * 0.22, height * 0.06),
                       sensorValues[1],
-                      'RTD Spindle Front'),
+                      'Vibration Sensor (Spindle Front)'),
                 ),
                 CustomPaint(
                   painter: LinePainter(
-                      Offset(width * 0.13, height * 0.25),
+                      Offset(width * 0.14, height * 0.235),
                       Offset(width * 0.17, height * 0.10),
                       Offset(width * 0.24, height * 0.10),
                       sensorValues[2],
-                      'Bearing Temperature Spindle Front'),
+                      'Bearing Temperature (Spindle Front)'),
                 ),
                 CustomPaint(
                   painter: LinePainter(
@@ -126,7 +128,7 @@ class _AboutSpindleState extends State<AboutSpindle> {
                       Offset(width * 0.45, height * 0.64),
                       Offset(width * 0.53, height * 0.64),
                       sensorValues[3],
-                      'Accelerometer Spindle Rear'),
+                      'Force Sensor (Spindle Rear)'),
                 ),
                 CustomPaint(
                   painter: LinePainter(
@@ -134,15 +136,15 @@ class _AboutSpindleState extends State<AboutSpindle> {
                       Offset(width * 0.46, height * 0.60),
                       Offset(width * 0.55, height * 0.60),
                       sensorValues[4],
-                      'RTD Spindle Rear'),
+                      'Vibration Sensor (Spindle Rear)'),
                 ),
                 CustomPaint(
                   painter: LinePainter(
-                      Offset(width * 0.445, height * 0.38),
+                      Offset(width * 0.45, height * 0.40),
                       Offset(width * 0.47, height * 0.56),
                       Offset(width * 0.57, height * 0.56),
                       1.2,
-                      'Bearing Temperature Spindle Rear'),
+                      'Bearing Temperature (Spindle Rear)'),
                 ),
                 CustomPaint(
                   painter: LinePainter(
@@ -165,17 +167,36 @@ class _AboutSpindleState extends State<AboutSpindle> {
             // Text(
             //   'The cursor is here: (${(x / width).toStringAsFixed(2)}, ${((y / height) - 0.1).toStringAsFixed(2)})',
             // ),
-            
+
             Padding(
-              padding: EdgeInsets.only(top: height * 0.25 ),
+              padding: EdgeInsets.only(top: height * 0.05),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Specifications:',style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                  Text(
+                    'Specifications:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                   SizedBox(
                     height: height * 0.02,
                   ),
                   TableWidget(),
+                  Container(
+                    height: height * 0.45,
+                    width: width * 0.30,
+                    child: ModelViewer(
+                      interactionPrompt: InteractionPrompt.none,
+                      cameraOrbit: "0deg 100deg 105%",
+                      backgroundColor: Colors.white,
+                      src:
+                          'assets/3dmodels/Spindle.gltf',
+                      alt: 'A 3D model of an astronaut',
+                      ar: true,
+                      autoRotate: true,
+                      
+                      disableZoom: true,
+                    ),
+                  ),
                 ],
               ),
             )
@@ -293,8 +314,8 @@ class _TableWidgetState extends State<TableWidget> {
           children: [
             Cell('Specifications', width * 0.08, height * 0.04, true, false),
             for (int i = 0; i < Parameters.length; i++)
-              Cell(
-                  '${Specification[i]}', width * 0.08, height * 0.04, false, false)
+              Cell('${Specification[i]}', width * 0.08, height * 0.04, false,
+                  false)
           ],
         )
       ],

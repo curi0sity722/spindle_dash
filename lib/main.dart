@@ -46,6 +46,7 @@ class _spindledashboardState extends State<spindledashboard>
     Tab(icon: Icon(Icons.perm_device_information), text: 'About Spindle'),
     Tab(icon: Icon(Icons.health_and_safety), text: 'Health Monitoring'),
     Tab(icon: Icon(Icons.analytics), text: 'Analysis and Diagnosis'),
+    
   ];
 
   @override
