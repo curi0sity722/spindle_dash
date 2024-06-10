@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:math';
-
+import 'dart:ui_web';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -96,7 +96,7 @@ class _LineGraphState extends State<LineGraph> {
 
   void initState() {
     super.initState();
-    Timer.periodic(Duration(microseconds: 500), (timer) {
+    Timer.periodic(Duration(microseconds: 700), (timer) {
       if (mounted) {
         // Check if widget is still mounted
         setState(() {
@@ -124,13 +124,13 @@ class _LineGraphState extends State<LineGraph> {
     setState(() {
       if (chartData.length <= 6) {
         chartData.add(
-          TimeSeriesData(DateTime.now(), _getRandomInt(10, 70),
+          TimeSeriesData(DateTime.now(), _getRandomInt(69, 72),
               _getRandomInt(20, 80), _getRandomInt(30, 90)),
         );
       } else {
         chartData.removeAt(0);
         chartData.add(
-          TimeSeriesData(DateTime.now(), _getRandomInt(10, 70),
+          TimeSeriesData(DateTime.now(), _getRandomInt(69, 72),
               _getRandomInt(20, 80), _getRandomInt(30, 90)),
         );
       }

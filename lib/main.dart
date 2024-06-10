@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.blue,
+            scaffoldBackgroundColor: Colors.white
           ),
           home: spindledashboard()),
     );
@@ -72,10 +73,11 @@ class _spindledashboardState extends State<spindledashboard>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue,
         title: Row(
           children: [
             // Image.asset('assets/cmti.jpeg'),
-            Text('Smart Integrated Motor Spindle DashBoard'),
+            Text('Smart Integrated Motor Spindle DashBoard',style: TextStyle(color: Colors.white),),
           ],
         ),
         bottom: PreferredSize(

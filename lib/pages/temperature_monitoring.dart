@@ -214,7 +214,7 @@ class _LineGraphState extends State<LineGraph> {
 
   void initState() {
     super.initState();
-    Timer.periodic(Duration(microseconds: 500), (timer) {
+    Timer.periodic(Duration(milliseconds: 500), (timer) {
       if (mounted) {
         // Check if widget is still mounted
         setState(() {
@@ -398,7 +398,7 @@ class _CircularGraphState extends State<CircularGraph> {
   void initState() {
     super.initState();
     // Start a timer to update the values every second
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    Timer.periodic(Duration(milliseconds: 500), (timer) {
       setState(() {
         final random = Random();
         switch (widget.initialValue) {
