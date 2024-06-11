@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:spindle_dash/api/fetchdata.dart';
 import 'dart:ui' as ui;
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,7 @@ class VibrationMonitoring extends StatefulWidget {
 
 class _VibrationMonitoringState extends State<VibrationMonitoring> {
   final Random random = Random();
-
+  late Future<List<String>> dataFuture;
   num x1 = 0, x2 = 0, y1 = 0, y2 = 0, z1 = 0, z2 = 0;
 
   num _getRandomInt(int min, int max) {
@@ -431,18 +432,20 @@ class _RadialWdgetState extends State<RadialWdget> {
       List<_ChartShaderData> data) {
     return <RadialBarSeries<_ChartShaderData, String>>[
       RadialBarSeries<_ChartShaderData, String>(
+        
         maximumValue: 5,
         dataLabelSettings: const DataLabelSettings(
             isVisible: true, textStyle: TextStyle(fontSize: 10.0)),
         dataSource: data,
         cornerStyle: CornerStyle.bothCurve,
+        
         gap: '10%',
         radius: '90%',
         xValueMapper: (_ChartShaderData data, _) => data.x,
         yValueMapper: (_ChartShaderData data, _) => data.y,
         pointRadiusMapper: (_ChartShaderData data, _) => data.text,
         dataLabelMapper: (_ChartShaderData data, _) => data.x,
-        animationDuration: 0,
+        animationDuration: 0.5,
       ),
     ];
   }

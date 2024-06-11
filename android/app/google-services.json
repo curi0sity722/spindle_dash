@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1043763935492",
+    "firebase_url": "https://dos1-23caf-default-rtdb.firebaseio.com",
+    "project_id": "dos1-23caf",
+    "storage_bucket": "dos1-23caf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1043763935492:android:62a7fa570200ddcf977851",
+        "android_client_info": {
+          "package_name": "com.example.spindle_dash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1043763935492-0jl6r5jrr891s385ofb62pidktle4fgm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtx2bIXkW0oN7l9G_-olsyOnkmxFWFLSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1043763935492-0jl6r5jrr891s385ofb62pidktle4fgm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1043763935492-ldl4087r0m41so3d65pp20hc76m7suov.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.activity1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

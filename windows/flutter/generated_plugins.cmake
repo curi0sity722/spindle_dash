@@ -4,6 +4,8 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   desktop_window
+  firebase_core
+  firebase_storage
   url_launcher_windows
 )
 

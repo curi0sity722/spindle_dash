@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,8 +10,13 @@ import 'package:spindle_dash/pages/temperature_monitoring.dart';
 import 'package:spindle_dash/pages/vibration_analysis.dart';
 import 'package:spindle_dash/pages/vibration_monitoring.dart';
 import 'package:spindle_dash/provider/user_provider.dart';
+import 'firebase_options.dart';
 
-void main() {
+
+void main() async{
+  await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(const MyApp());
 }
 

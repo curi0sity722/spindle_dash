@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import "dart:math";
 import 'package:model_viewer_plus/model_viewer_plus.dart';
+import 'package:spindle_dash/api/fetchdata.dart';
 
 class AboutSpindle extends StatefulWidget {
   const AboutSpindle({super.key});
@@ -17,6 +18,7 @@ class _AboutSpindleState extends State<AboutSpindle> {
   double x = 0.0;
   double y = 0.0;
   Timer? _timer;
+  late String threedmodelpath;
   List<double> sensorValues = List.filled(8, 0);
   // double sensorValue1 = 0.0;
   // double sensorValue2 = 0.0;
@@ -62,6 +64,24 @@ class _AboutSpindleState extends State<AboutSpindle> {
           sensorValues[i] = generateRandomDouble();
         }
       });
+    });
+    setState(() {
+      FutureBuilder(
+        future: FireStoreDataBase().getData(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Text(
+              "Something went wrong",
+            );
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Image.network(
+              threedmodelpath = snapshot.data.toString(),
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      );
     });
   }
 
@@ -184,18 +204,31 @@ class _AboutSpindleState extends State<AboutSpindle> {
                   Container(
                     height: height * 0.45,
                     width: width * 0.30,
-                    child: ModelViewer(
-                      interactionPrompt: InteractionPrompt.none,
-                      cameraOrbit: "0deg 100deg 105%",
-                      backgroundColor: Colors.white,
-                      src:
-                          'assets/images/Spindle.gltf',
-                      //  src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
-                      alt: 'A 3D model of an astronaut',
-                      ar: true,
-                      autoRotate: true,
-                      
-                      disableZoom: true,
+                    child: FutureBuilder(
+                      future: FireStoreDataBase().getData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const Text(
+                            "Something went wrong",
+                          );
+                        }
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          return ModelViewer(
+                            interactionPrompt: InteractionPrompt.none,
+                            cameraOrbit: "0deg 100deg 105%",
+                            backgroundColor: Colors.white,
+                            src: threedmodelpath,
+
+                            //  src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
+                            alt: 'A 3D model of an astronaut',
+                            ar: true,
+                            autoRotate: true,
+
+                            disableZoom: true,
+                          );
+                        }
+                        return const Center(child: CircularProgressIndicator());
+                      },
                     ),
                   ),
                 ],
