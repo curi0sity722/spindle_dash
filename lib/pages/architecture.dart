@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import "dart:math";
@@ -95,7 +96,7 @@ class _ArchitecturePageState extends State<ArchitecturePage> {
                           Offset(width * 0.68, height * 0.56),
                           Offset(width * 0.73, height * 0.56),
                           1.2,
-                          'Drawbar clamp/unclamp',
+                          ' Drawbar clamp/unclamp',
                           Color.fromARGB(255, 231, 231, 1)),
                     ),
                     CustomPaint(
@@ -104,7 +105,7 @@ class _ArchitecturePageState extends State<ArchitecturePage> {
                           Offset(width * 0.48, height * 0.59),
                           Offset(width * 0.73, height * 0.59),
                           sensorValues[7],
-                          'Rotary Encoder',
+                          ' Rotary Encoder',
                           Color.fromARGB(255, 231, 231, 1)),
                     ),
                     CustomPaint(
@@ -113,7 +114,7 @@ class _ArchitecturePageState extends State<ArchitecturePage> {
                           Offset(width * 0.12, height * 0.65),
                           Offset(width * 0.73, height * 0.65),
                           sensorValues[1],
-                          'Strain Gauges',
+                          ' Strain Gauges',
                           Color.fromARGB(255, 231, 231, 1)),
                     ),
                     CustomPaint(
@@ -131,7 +132,7 @@ class _ArchitecturePageState extends State<ArchitecturePage> {
                           Offset(width * 0.13, height * 0.62),
                           Offset(width * 0.73, height * 0.62),
                           sensorValues[0],
-                          'Accelerometers',
+                          ' Accelerometers',
                           Color.fromARGB(255, 231, 231, 1)),
                     ),
                     CustomPaint(
@@ -149,7 +150,7 @@ class _ArchitecturePageState extends State<ArchitecturePage> {
                           Offset(width * 0.11, height * 0.68),
                           Offset(width * 0.73, height * 0.68),
                           sensorValues[2],
-                          'Bearing Temperature',
+                          ' Bearing Temperature',
                           Color.fromARGB(255, 231, 231, 1)),
                     ),
                     CustomPaint(
@@ -167,7 +168,7 @@ class _ArchitecturePageState extends State<ArchitecturePage> {
                           Offset(width * 0.25, height * 0.71),
                           Offset(width * 0.73, height * 0.71),
                           sensorValues[7],
-                          'Motor Temperature',
+                          ' Motor Temperature',
                           Color.fromARGB(255, 231, 231, 1)),
                     ),
                     CustomPaint(
@@ -176,8 +177,115 @@ class _ArchitecturePageState extends State<ArchitecturePage> {
                           Offset(width * 0.015, height * 0.74),
                           Offset(width * 0.73, height * 0.74),
                           sensorValues[7],
-                          'Drawbar Position',
+                          ' Drawbar Position',
                           Color.fromARGB(255, 231, 231, 1)),
+                    ),
+                    CustomPaint(
+                      painter: LinePainter(
+                          Offset(
+                              width * -0.04,
+                              height *
+                                  0.80), //Hydrullic Power Pack ---> Controller
+                          Offset(width * 0.5, height * 0.80),
+                          Offset(width * 0.55, height * 0.80),
+                          sensorValues[7],
+                          '',
+                          Color.fromARGB(255, 0, 132, 255)),
+                    ),
+                    CustomPaint(
+                      painter: LinePainter(
+                          Offset(width * 0.18,
+                              height * 0.85), //Lubricator ---> Controller
+                          Offset(width * 0.5, height * 0.85),
+                          Offset(width * 0.55, height * 0.85),
+                          sensorValues[7],
+                          '',
+                          Color.fromARGB(255, 0, 132, 255)),
+                    ),
+                    CustomPaint(
+                      painter: LinePainter(
+                          Offset(width * 0.365,
+                              height * 0.9), //Chiller ---> Controller
+                          Offset(width * 0.5, height * 0.9),
+                          Offset(width * 0.55, height * 0.9),
+                          sensorValues[7],
+                          '',
+                          Color.fromARGB(255, 0, 132, 255)),
+                    ),
+                    CustomPaint(
+                      painter: LinePainterflow(
+                          Offset(width * 0.01, height * 0.32),
+                          Offset(width * 0.001 * -50,
+                              height * 0.32), //Hydrullic Power Pack
+                          Offset(width * 0.001 * -50, height * 0.82),
+                          const Color.fromARGB(255, 255, 255, 255)),
+                    ),
+                    CustomPaint(
+                      painter: LinePainterflow(
+                          Offset(width * 0.17,
+                              height * 0.42), //Oil + Air Lubrication
+                          Offset(width * 0.17, height * 0.52),
+                          Offset(width * 0.17, height * 0.82),
+                          const Color.fromARGB(255, 255, 255, 255)),
+                    ),
+                    CustomPaint(
+                      painter: LinePainterflow(
+                          Offset(width * 0.34, height * 0.42), //Chiller
+                          Offset(width * 0.34, height * 0.52),
+                          Offset(width * 0.34, height * 0.80),
+                          const Color.fromARGB(255, 255, 255, 255)),
+                    ),
+                    CustomPaint(
+                      painter: LinePainterflow(
+                          Offset(
+                              width * 0.56, height * 0.40), //Controller (DAQ)
+                          Offset(width * 0.56, height * 0.52),
+                          Offset(width * 0.56, height * 0.80),
+                          const Color.fromARGB(255, 255, 255, 255)),
+                    ),
+                    CustomPaint(
+                      painter: LinePainterflow(
+                          Offset(width * 0.57,
+                              height * 0.85), //Controller ---> IIOT Dashboard
+                          Offset(width * 0.67, height * 0.85),
+                          Offset(width * 0.74, height * 0.85),
+                          const Color.fromARGB(255, 255, 255, 255)),
+                    ),
+                    CustomPaint(
+                      painter: LinePainterflow(
+                          Offset(width * 0.73, height * 0.84),
+                          Offset(width * 0.73, height * 0.16),
+                          Offset(width * 0.65, height * 0.16),
+                          Color.fromARGB(255, 251, 255, 0)),
+                    ),
+                    CustomPaint(
+                      painter: TextPainterCustom(
+                        text: 'Pressure \nOil & Temperature',
+                        position: Offset(width * 0.01, height * 0.81),
+                      ),
+                    ),
+                    CustomPaint(
+                      painter: TextPainterCustom(
+                        text: 'Lubrication \nPressure',
+                        position: Offset(width * 0.20, height * 0.86),
+                      ),
+                    ),
+                    CustomPaint(
+                      painter: TextPainterCustom(
+                        text: 'Chiller \nTemperature',
+                        position: Offset(width * 0.40, height * 0.91),
+                      ),
+                    ),
+                    Positioned(
+                      // Y-coordinate
+                      left: width * 0.59,
+                      top: height * 0.10,
+                      child: Image.asset(
+                        'assets/images/network.png',
+                        width: width * 0.1, // Width of the image
+                        height: height * 0.1, // Height of the image
+                        fit: BoxFit.contain, // Adjust based on your need
+                      ),
                     ),
                   ],
                 ),
@@ -189,77 +297,49 @@ class _ArchitecturePageState extends State<ArchitecturePage> {
               SizedBox(
                 height: height * 0.15,
               ),
-              Stack(
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CustomPaint(
-                    painter: LinePainter(
-                        Offset(width * 0.105, height * 0.02),
-                        Offset(width * 0.2, height * 0.02),
-                        Offset(width * 0.7  , height * 0.02),
-                        sensorValues[7],
-                        '',
-                        Colors.blue),
-                  ),
-                  CustomPaint(
-                    painter: LinePainter(
-                        Offset(width * 0.32, height * 0.06),
-                        Offset(width * 0.42, height * 0.06),
-                        Offset(width * 0.7, height * 0.06),
-                        sensorValues[9],
-                        '',
-                        Colors.blue,),
-                  ),
-                  CustomPaint(
-                    painter: LinePainter(
-                        Offset(width * 0.518, height * 0.09),
-                        Offset(width * 0.62, height * 0.09),
-                        Offset(width * 0.7, height * 0.09),
-                        sensorValues[9],
-                        '',
-                        Colors.blue,
-                        ),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // List of image asset paths
-                      ...[
-                        ['assets/images/hpp.png', 'Hydraulic Power Pack (HPP)'],
-                        ['assets/images/lubricator.png', 'Oil+Air Lubrication'],
-                        ['assets/images/chiller.png', 'Chiller'],
-                        [
-                          'assets/images/controller(daq).png',
-                          'Controller (daq)'
-                        ],
-                        ['assets/images/dashboard.png', 'IIOT Dashboard'],
-                      ].map(
-                        (imagePath) => SizedBox(
-                          width: width * 0.2,
-                          height: height * 0.3,
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                imagePath[0],
-                                fit: BoxFit.contain,
-                              ),
-                              // Flexible(
-                              //     child: Text(
-                              //   imagePath[1],
-                              //   softWrap: true, // Allow text to wrap
-                              //   overflow: TextOverflow
-                              //       .visible, // Avoid overflow by clipping
-                              //   style: TextStyle(
-                              //     color: Colors.blue,
-                              //   ),
-                              // ))
-                            ],
+                  // List of image asset paths with their corresponding labels
+                  ...[
+                    ['assets/images/hpp.png', 'Hydraulic Power Pack (HPP)'],
+                    ['assets/images/lubricator.png', 'Oil+Air Lubrication'],
+                    ['assets/images/chiller.png', 'Chiller'],
+                    ['assets/images/controller(daq).png', 'Controller (DAQ)'],
+                    ['assets/images/dashboard.png', 'IIOT Dashboard'],
+                  ].map(
+                    (imageData) => Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Display the image
+                          Image.asset(
+                            imageData[0],
+                            width: width * 0.075,
+                            height: height * 0.16,
+                            fit: BoxFit.fill,
                           ),
-                        ),
+                          SizedBox(
+                              height:
+                                  8), // Add spacing between the image and text
+                          // Display the label with proper wrapping
+                          Text(
+                            imageData[1],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                            maxLines: 2, // Limit text to 2 lines
+                            overflow:
+                                TextOverflow.ellipsis, // Ellipsis for overflow
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -276,8 +356,8 @@ class LinePainter extends CustomPainter {
   final String sensorname;
   final Color line_color;
 
-  LinePainter(
-      this.start, this.middle, this.end, this.sensorcolor, this.sensorname, this.line_color);
+  LinePainter(this.start, this.middle, this.end, this.sensorcolor,
+      this.sensorname, this.line_color);
 
   Color getcolor(value) {
     if (value <= 1.5) {
@@ -321,6 +401,73 @@ class LinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class LinePainterflow extends CustomPainter {
+  final Offset start;
+  final Offset middle;
+  final Offset end;
+  final Color linecolor;
+
+  LinePainterflow(this.start, this.middle, this.end, this.linecolor);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = linecolor
+      ..strokeWidth = 6.0;
+
+    // Draw lines
+    canvas.drawLine(start, middle, paint);
+
+    canvas.drawLine(middle, end, paint..color = linecolor);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class TextPainterCustom extends CustomPainter {
+  final String text; // Text to paint
+  final Offset position; // Position to paint the text
+  final Color color; // Text color
+  final double fontSize; // Text font size
+
+  TextPainterCustom({
+    required this.text,
+    required this.position,
+    this.color = Colors.white,
+    this.fontSize = 16.0,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Define text style
+    final textStyle = TextStyle(
+      color: color,
+      fontSize: fontSize,
+    );
+
+    // Create a TextPainter
+    final textPainter = TextPainter(
+      text: TextSpan(text: text, style: textStyle),
+      textDirection: TextDirection.ltr, // Specify text direction
+    );
+
+    // Layout the text
+    textPainter.layout();
+
+    // Paint the text at the specified position
+    textPainter.paint(canvas, position);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    // Repaint only if text or position changes
     return true;
   }
 }

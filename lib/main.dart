@@ -16,12 +16,10 @@ import 'firebase_options.dart';
 
 import 'dart:math' as math show pi;
 
-
-
-void main() async{
+void main() async {
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -32,21 +30,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => InitialDurationProvider(),
-      child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            scaffoldBackgroundColor: Colors.black
-          ),
-          home: Scaffold(
-        body: spindledashboard(),))
-    );
+        create: (_) => InitialDurationProvider(),
+        child: MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+                primarySwatch: Colors.blue,
+                scaffoldBackgroundColor: Colors.black),
+            home: Scaffold(
+              body: spindledashboard(),
+            )));
   }
 }
-
-
-
 
 class spindledashboard extends StatefulWidget {
   const spindledashboard({super.key});
@@ -59,12 +53,10 @@ class _spindledashboardState extends State<spindledashboard>
     with TickerProviderStateMixin {
   late TabController _tabController;
   final List<Widget> _tabList = [
-    Tab(icon: Icon(Icons.architecture), text: 'Architecture'),
     Tab(icon: Icon(Icons.perm_device_information), text: 'About Spindle'),
-    
+    Tab(icon: Icon(Icons.architecture), text: 'Architecture'),
     Tab(icon: Icon(Icons.health_and_safety), text: 'Health Monitoring'),
     Tab(icon: Icon(Icons.analytics), text: 'Analysis and Diagnosis'),
-    
   ];
 
   @override
@@ -94,7 +86,10 @@ class _spindledashboardState extends State<spindledashboard>
         title: Row(
           children: [
             // Image.asset('assets/cmti.jpeg'),
-            Text('Smart Integrated Motor Spindle DashBoard',style: TextStyle(color: Colors.white),),
+            Text(
+              'Smart Integrated Motor Spindle DashBoard',
+              style: TextStyle(color: Colors.white),
+            ),
           ],
         ),
         bottom: PreferredSize(
@@ -146,9 +141,8 @@ class _spindledashboardState extends State<spindledashboard>
       body: TabBarView(
         controller: _tabController,
         children: const [
-          Center(child: ArchitecturePage()),
           Center(child: AboutSpindle()),
-          
+          Center(child: ArchitecturePage()),
           Center(child: Subswitcher1()),
           Center(child: Subswitcher2()),
         ],
@@ -156,4 +150,3 @@ class _spindledashboardState extends State<spindledashboard>
     );
   }
 }
-
