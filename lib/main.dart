@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spindle_dash/pages/about_spindle.dart';
+import 'package:spindle_dash/pages/architecture.dart';
 import 'package:spindle_dash/pages/energy_monitoring.dart';
 import 'package:spindle_dash/pages/force_monitoring.dart';
 import 'package:spindle_dash/pages/switchtabspage.dart';
@@ -10,7 +11,11 @@ import 'package:spindle_dash/pages/temperature_monitoring.dart';
 import 'package:spindle_dash/pages/vibration_analysis.dart';
 import 'package:spindle_dash/pages/vibration_monitoring.dart';
 import 'package:spindle_dash/provider/user_provider.dart';
+import 'package:collapsible_sidebar/collapsible_sidebar.dart';
 import 'firebase_options.dart';
+
+import 'dart:math' as math show pi;
+
 
 
 void main() async{
@@ -32,12 +37,16 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.blue,
-            scaffoldBackgroundColor: Colors.white
+            scaffoldBackgroundColor: Colors.black
           ),
-          home: spindledashboard()),
+          home: Scaffold(
+        body: spindledashboard(),))
     );
   }
 }
+
+
+
 
 class spindledashboard extends StatefulWidget {
   const spindledashboard({super.key});
@@ -50,7 +59,9 @@ class _spindledashboardState extends State<spindledashboard>
     with TickerProviderStateMixin {
   late TabController _tabController;
   final List<Widget> _tabList = [
+    Tab(icon: Icon(Icons.architecture), text: 'Architecture'),
     Tab(icon: Icon(Icons.perm_device_information), text: 'About Spindle'),
+    
     Tab(icon: Icon(Icons.health_and_safety), text: 'Health Monitoring'),
     Tab(icon: Icon(Icons.analytics), text: 'Analysis and Diagnosis'),
     
@@ -127,15 +138,17 @@ class _spindledashboardState extends State<spindledashboard>
                 backgroundColor:
                     Provider.of<InitialDurationProvider>(context, listen: false)
                             .handleStartStop
-                        ? MaterialStateProperty.all<Color>(Colors.red)
-                        : MaterialStateProperty.all<Color>(Colors.green)),
+                        ? WidgetStateProperty.all<Color>(Colors.red)
+                        : WidgetStateProperty.all<Color>(Colors.green)),
           ),
         ],
       ),
       body: TabBarView(
         controller: _tabController,
         children: const [
+          Center(child: ArchitecturePage()),
           Center(child: AboutSpindle()),
+          
           Center(child: Subswitcher1()),
           Center(child: Subswitcher2()),
         ],
@@ -143,3 +156,4 @@ class _spindledashboardState extends State<spindledashboard>
     );
   }
 }
+

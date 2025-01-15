@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import "dart:math";
 import 'package:model_viewer_plus/model_viewer_plus.dart';
@@ -18,7 +19,8 @@ class _AboutSpindleState extends State<AboutSpindle> {
   double x = 0.0;
   double y = 0.0;
   Timer? _timer;
-  late String threedmodelpath;
+  late Future<String> _modelPath;
+  // String threedmodelpath = '/assets/images/cmti-logo.png';
   List<double> sensorValues = List.filled(8, 0);
   // double sensorValue1 = 0.0;
   // double sensorValue2 = 0.0;
@@ -47,42 +49,8 @@ class _AboutSpindleState extends State<AboutSpindle> {
   @override
   void initState() {
     super.initState();
-    // Initialize sensor values
-    // sensorValue1 = generateRandomDouble();
-    // sensorValue2 = generateRandomDouble();
-    // sensorValue3 = generateRandomDouble();
-    // sensorValue4 = generateRandomDouble();
 
-    // Start the timer
-    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
-      setState(() {
-        // sensorValue1 = generateRandomDouble();
-        // sensorValue2 = generateRandomDouble();
-        // sensorValue3 = generateRandomDouble();
-        // sensorValue4 = generateRandomDouble();
-        for (int i = 0; i < sensorValues.length; i++) {
-          sensorValues[i] = generateRandomDouble();
-        }
-      });
-    });
-    setState(() {
-      FutureBuilder(
-        future: FireStoreDataBase().getData(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Text(
-              "Something went wrong",
-            );
-          }
-          if (snapshot.connectionState == ConnectionState.done) {
-            return Image.network(
-              threedmodelpath = snapshot.data.toString(),
-            );
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
-      );
-    });
+    _modelPath = threedmodelpath();
   }
 
   @override
@@ -105,194 +73,196 @@ class _AboutSpindleState extends State<AboutSpindle> {
       onHover: _updateLocation,
       onExit: _incrementExit,
       child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Stack(
-              children: [
-                Container(
-                    width: width * 0.7,
-                    height: height * 0.6,
-                    child: Image.asset(
-                      'assets/images/spindle1.png',
-                      fit: BoxFit.fill,
-                    )),
-                CustomPaint(
-                  painter: LinePainter(
-                      Offset(width * 0.115, height * 0.21),
-                      Offset(width * 0.15, height * 0.03),
-                      Offset(width * 0.2, height * 0.03),
-                      sensorValues[0],
-                      'Force Sensor (Spindle Front)'),
-                ),
-                CustomPaint(
-                  painter: LinePainter(
-                      Offset(width * 0.13, height * 0.21),
-                      Offset(width * 0.16, height * 0.06),
-                      Offset(width * 0.22, height * 0.06),
-                      sensorValues[1],
-                      'Vibration Sensor (Spindle Front)'),
-                ),
-                CustomPaint(
-                  painter: LinePainter(
-                      Offset(width * 0.14, height * 0.235),
-                      Offset(width * 0.17, height * 0.10),
-                      Offset(width * 0.24, height * 0.10),
-                      sensorValues[2],
-                      'Bearing Temperature (Spindle Front)'),
-                ),
-                CustomPaint(
-                  painter: LinePainter(
-                      Offset(width * 0.425, height * 0.42),
-                      Offset(width * 0.45, height * 0.64),
-                      Offset(width * 0.53, height * 0.64),
-                      sensorValues[3],
-                      'Force Sensor (Spindle Rear)'),
-                ),
-                CustomPaint(
-                  painter: LinePainter(
-                      Offset(width * 0.44, height * 0.42),
-                      Offset(width * 0.46, height * 0.60),
-                      Offset(width * 0.55, height * 0.60),
-                      sensorValues[4],
-                      'Vibration Sensor (Spindle Rear)'),
-                ),
-                CustomPaint(
-                  painter: LinePainter(
-                      Offset(width * 0.45, height * 0.40),
-                      Offset(width * 0.47, height * 0.56),
-                      Offset(width * 0.57, height * 0.56),
-                      1.2,
-                      'Bearing Temperature (Spindle Rear)'),
-                ),
-                CustomPaint(
-                  painter: LinePainter(
-                      Offset(width * 0.52, height * 0.24),
-                      Offset(width * 0.53, height * 0.18),
-                      Offset(width * 0.57, height * 0.18),
-                      1.2,
-                      'Coolant Inlet Temperature'),
-                ),
-                CustomPaint(
-                  painter: LinePainter(
-                      Offset(width * 0.52, height * 0.44),
-                      Offset(width * 0.53, height * 0.50),
-                      Offset(width * 0.57, height * 0.50),
-                      sensorValues[7],
-                      'Coolant Outlet Temperature'),
-                ),
-              ],
-            ),
-            // Text(
-            //   'The cursor is here: (${(x / width).toStringAsFixed(2)}, ${((y / height) - 0.1).toStringAsFixed(2)})',
-            // ),
-
-            Padding(
-              padding: EdgeInsets.only(top: height * 0.05),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Specifications:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  TableWidget(),
-                  Container(
-                    height: height * 0.45,
-                    width: width * 0.30,
-                    child: FutureBuilder(
-                      future: FireStoreDataBase().getData(),
+        backgroundColor: Colors.black87,
+        body: Padding(
+          padding: EdgeInsets.only(top: height * 0.05),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    FutureBuilder<String>(
+                      future: _modelPath,
                       builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return const Text(
-                            "Something went wrong",
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Center(
+                            child: Text('Error: ${snapshot.error}'),
+                          );
+                        } else {
+                          return SizedBox(
+                            height: height * 0.40,
+                            width: width * 0.55,
+                            child: const ModelViewer(
+                              interactionPrompt: InteractionPrompt.none,
+                              cameraOrbit: "0deg 100deg 70%",
+                              backgroundColor: Color.fromARGB(144, 36, 36, 36),
+                              // src: snapshot.data!,
+                              src:
+                                  "https://firebasestorage.googleapis.com/v0/b/dos1-23caf.appspot.com/o/Spindle.gltf?alt=media&token=ac3e2e4b-c7c2-4138-8153-740857562a07",
+                              // src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
+                              // src: 'assets/3dmodels/Spindle.gltf',
+                              alt: 'A 3D model of an astronaut',
+                              ar: true,
+                              autoRotate: true,
+                              disableZoom: true,
+                            ),
                           );
                         }
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          return ModelViewer(
-                            interactionPrompt: InteractionPrompt.none,
-                            cameraOrbit: "0deg 100deg 105%",
-                            backgroundColor: Colors.white,
-                            src: threedmodelpath,
-
-                            //  src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
-                            alt: 'A 3D model of an astronaut',
-                            ar: true,
-                            autoRotate: true,
-
-                            disableZoom: true,
-                          );
-                        }
-                        return const Center(child: CircularProgressIndicator());
                       },
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(width * 0.05, height * 0.03,
+                          width * 0.05, height * 0.03),
+                      child: SizedBox(
+                        width: width * 0.6,
+                        child: const Flexible(
+                          child: Text(
+                            '‘SMART’ integrated motor spindles represent a cutting-edge solution for high-performance machining applications, offering improved precision, efficiency, and reliability in a compact and smart integrated IIoT package. The designed Smart integrated motor spindles typically provide high precision and accuracy in machining operations.',
+                            style: TextStyle(
+                              color: Colors.white, // Set text color to white
+                              fontSize: 20, // Adjust font size as needed
+                            ),
+                            softWrap: true, // Allow text to wrap to the next line
+                            overflow:
+                                TextOverflow.visible, // Make overflow visible
+                            textAlign: TextAlign
+                                .justify, // Align text for better readability
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: width * 0.6,
+                      height: height * 0.5,
+                      child: Padding(
+                        padding: EdgeInsets.all(0.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Title
+                            Text(
+                              "Salient Features",
+                              style: TextStyle(
+                                color: Colors.lightGreen,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                                height: 16), // Spacing between title and features
+                            // Two-column features
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // Left column
+                                Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SalientFeatureItem(
+                                          text:
+                                              "Design assisted for high frequency"),
+                                      SalientFeatureItem(
+                                          text:
+                                              "Additional micro balancing system"),
+                                      SalientFeatureItem(
+                                          text:
+                                              "Inbuilt sensors for data acquisition"),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(width: width * 0.1), // Spacing between columns
+                                // Right column
+                                Expanded(
+                                  flex: 2,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      SalientFeatureItem(
+                                          text:
+                                              "Real-time data condition monitoring"),
+                                      SalientFeatureItem(
+                                          text:
+                                              "Data analytics & adaptive control"),
+                                      SalientFeatureItem(
+                                          text: "IIoT enabled, Dashboard (GUI)"),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            )
-          ],
+              // SizedBox(
+              //   height: height * 0.02,
+              // ),
+              const TableWidget()
+            ],
+          ),
         ),
       ),
     );
   }
+
+  Future<String> threedmodelpath() async {
+    // Get reference to the file
+    Reference ref = FirebaseStorage.instance.ref('Spindle.gltf');
+
+// Fetch the download URL
+    String url = await ref.getDownloadURL();
+    print(url);
+    return url;
+  }
 }
 
-class LinePainter extends CustomPainter {
-  final Offset start;
-  final Offset middle;
-  final Offset end;
-  final double sensorcolor;
-  final String sensorname;
+class SalientFeatureItem extends StatelessWidget {
+  final String text;
 
-  LinePainter(
-      this.start, this.middle, this.end, this.sensorcolor, this.sensorname);
-
-  Color getcolor(value) {
-    if (value <= 1.5) {
-      return Colors.green;
-    } else if (value > 1.5 && value < 2.5) {
-      return Colors.yellow.shade700;
-    } else {
-      return Colors.red;
-    }
-  }
+  const SalientFeatureItem({required this.text});
 
   @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.black
-      ..strokeWidth = 3.0;
-
-    // Draw lines
-    canvas.drawLine(start, middle, paint);
-    canvas.drawCircle(start, 8, paint..color = Colors.black);
-    canvas.drawCircle(start, 5, paint..color = getcolor(sensorcolor));
-    canvas.drawLine(middle, end, paint..color = Colors.black);
-    canvas.drawCircle(end, 3, paint..color = Colors.black);
-
-    // Draw text at the end
-    final textSpan = TextSpan(
-      text: sensorname,
-      style: TextStyle(color: Colors.black, fontSize: 14),
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0), // Spacing between items
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "•", // Bullet point
+            style: TextStyle(
+              color: Colors.lightGreen,
+              fontSize: 16,
+            ),
+          ),
+          SizedBox(width: width * 0.02), // Spacing between bullet and text
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(
+                color: Colors.lightGreen,
+                fontSize: 24,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
-
-    final textPainter = TextPainter(
-      text: textSpan,
-      textDirection: TextDirection.ltr,
-    );
-
-    textPainter.layout(minWidth: 0, maxWidth: double.infinity);
-    final textOffset = Offset(end.dx + 5, end.dy - textPainter.height / 2);
-    textPainter.paint(canvas, textOffset);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
   }
 }
 
@@ -305,50 +275,65 @@ class TableWidget extends StatefulWidget {
 
 class _TableWidgetState extends State<TableWidget> {
   List<String> Parameters = [
-    'Power',
-    'Rated Torque',
-    'Rated Speed',
-    'Maximum Speed',
-    'Rated Current',
-    'Maximum Current',
-    'Balancing class'
+    "Spindle Type",
+    "Maximum Speed",
+    "Rated Speed",
+    "Rated Torque",
+    "Power",
+    "Rated Current",
+    "Bearing Type",
+    "Bearing Arrangement",
+    "Lubrication Type",
+    "Lubrication Oil Displacement",
+    "Tool Interface",
+    "Drawbar Actuation Type",
+    "Encoder Type",
+    "Spindle Balancing Grade"
   ];
   List<String> Specification = [
-    '15.5 kW',
-    '42 Nm',
-    '3500 RPM',
-    '20000 RPM',
-    '42 A',
-    '84 A',
-    'G1'
+    "Integrated Motor (Synchronous) Spindle",
+    "20000 rpm",
+    "18000 rpm",
+    "42 Nm @ 3500 rpm",
+    "15.5 kW",
+    "42 A",
+    "Super Precision Angular Contact Bearings",
+    "Back to Back",
+    "Oil Air Mist",
+    "0.03 ml per Stroke",
+    "HSK A 63",
+    "Hydraulic",
+    "Magnetic Incremental Encoder",
+    "G1"
   ];
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    double cell_height = height * 0.05;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        // Column(
+        //   children: [
+        //     Cell('SL NO', width * 0.03, cell_height, true, true),
+        //     for (int i = 1; i < Parameters.length + 1; i++)
+        //       Cell('$i', width * 0.03, cell_height, false, true)
+        //   ],
+        // ),
         Column(
           children: [
-            Cell('SL NO', width * 0.05, height * 0.04, true, true),
-            for (int i = 1; i < 8; i++)
-              Cell('$i', width * 0.05, height * 0.04, false, true)
-          ],
-        ),
-        Column(
-          children: [
-            Cell('Parameters', width * 0.15, height * 0.04, true, false),
+            Cell('Parameter', width * 0.12, cell_height, true, false),
             for (int i = 0; i < Parameters.length; i++)
               Cell(
-                  '${Parameters[i]}', width * 0.15, height * 0.04, false, false)
+                  '${Parameters[i]}', width * 0.12, cell_height, false, false)
           ],
         ),
         Column(
           children: [
-            Cell('Specifications', width * 0.08, height * 0.04, true, false),
+            Cell('Specification', width * 0.12, cell_height, true, false),
             for (int i = 0; i < Parameters.length; i++)
-              Cell('${Specification[i]}', width * 0.08, height * 0.04, false,
+              Cell('${Specification[i]}', width * 0.12, cell_height, false,
                   false)
           ],
         )
@@ -357,6 +342,7 @@ class _TableWidgetState extends State<TableWidget> {
   }
 
   Widget Cell(text, width, height, FirstColumnCheck, CenterOrStartCheck) {
+    
     return Container(
       width: width,
       height: height,
@@ -366,10 +352,25 @@ class _TableWidgetState extends State<TableWidget> {
             ? MainAxisAlignment.center
             : MainAxisAlignment.start,
         children: [
-          Text(
-            text,
-            style: TextStyle(
-                color: FirstColumnCheck ? Colors.white : Colors.black),
+          SizedBox(
+            width: width * 0.03,
+          ),
+          Flexible(
+            child: Text(
+
+              text,
+              style: TextStyle(
+                  color: FirstColumnCheck ? Colors.white : Colors.black,
+                  fontSize: width * 0.07,
+                  ),
+                
+              softWrap: true, // Allow text to wrap
+              overflow: TextOverflow.visible, // Avoid overflow by clipping
+              textAlign: CenterOrStartCheck
+                  ? TextAlign.center
+                  : TextAlign.start, // Align text dynamically
+              
+            ),
           ),
         ],
       ),
