@@ -105,7 +105,7 @@ class _AboutSpindleState extends State<AboutSpindle> {
                               // src: snapshot.data!,
                               // src:"https://firebasestorage.googleapis.com/v0/b/dos1-23caf.appspot.com/o/Spindle.gltf?alt=media&token=ac3e2e4b-c7c2-4138-8153-740857562a07",
                               // src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
-                              src: 'assets/3dmodels/spindleglb.glb',
+                              src: 'assets/3dmodels/Spindle.gltf',
                               alt: 'A 3D model of an astronaut',
                               ar: true,
                               autoRotate: true,
