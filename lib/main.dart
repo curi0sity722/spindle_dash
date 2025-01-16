@@ -1,24 +1,13 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:spindle_dash/pages/about_spindle.dart';
 import 'package:spindle_dash/pages/architecture.dart';
-import 'package:spindle_dash/pages/energy_monitoring.dart';
-import 'package:spindle_dash/pages/force_monitoring.dart';
 import 'package:spindle_dash/pages/switchtabspage.dart';
-import 'package:spindle_dash/pages/temperature_monitoring.dart';
-import 'package:spindle_dash/pages/vibration_analysis.dart';
-import 'package:spindle_dash/pages/vibration_monitoring.dart';
 import 'package:spindle_dash/provider/user_provider.dart';
-import 'package:collapsible_sidebar/collapsible_sidebar.dart';
-import 'firebase_options.dart';
-
-import 'dart:math' as math show pi;
 
 void main() {
-    WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -33,7 +22,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
             title: 'Flutter Demo',
             theme: ThemeData(
-                primarySwatch: Colors.blue,
+                primarySwatch: Colors.indigo,
                 scaffoldBackgroundColor: Colors.black),
             home: Scaffold(
               body: spindledashboard(),
@@ -81,40 +70,49 @@ class _spindledashboardState extends State<spindledashboard>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Row(
+        backgroundColor: const Color.fromARGB(255, 0, 0, 75),
+        title: const Row(
           children: [
             // Image.asset('assets/cmti.jpeg'),
-            Text(
-              'Smart Integrated Motor Spindle DashBoard',
-              style: TextStyle(color: Colors.white),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Smart Integrated Motor Spindle DashBoard',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(45.0), // Adjust height as needed
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TabBar(
-                controller: _tabController,
-                isScrollable: true, // Enable scrolling if tabs overflow
-                labelColor: Colors.white, // Customize label color
-                unselectedLabelColor:
-                    Colors.white54, // Customize unselected label color
-                indicator: BoxDecoration(
-                  // Customize tab indicator
-                  color: Colors.blue, // Change color
-                  borderRadius:
-                      BorderRadius.circular(10.0), // Add border radius
+          preferredSize: const Size.fromHeight(55.0), // Adjust height as needed
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+                vertical: 5.0, horizontal: 10.0), // Add padding
+            child: Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.center, // Center the TabBar horizontally
+              children: [
+                TabBar(
+                  controller: _tabController,
+                  isScrollable: true, // Enable scrolling if tabs overflow
+                  labelColor: Colors.white, // Customize label color
+                  unselectedLabelColor:
+                      Colors.white54, // Customize unselected label color
+                  indicator: BoxDecoration(
+                    // Customize tab indicator
+                    color:
+                        const Color.fromARGB(255, 65, 33, 243), // Change color
+                    borderRadius:
+                        BorderRadius.circular(10.0), // Add border radius
+                  ),
+                  tabs: _tabList,
                 ),
-                tabs: _tabList,
-              ),
-              // Text('CMTI')
-            ],
+              ],
+            ),
           ),
         ),
         actions: [
+          Image.asset('assets/images/logo.png'),
           ElevatedButton(
             onPressed: () {
               _toggleTimer();

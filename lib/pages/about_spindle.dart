@@ -3,7 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import "dart:math";
 import 'package:model_viewer_plus/model_viewer_plus.dart';
-import 'package:spindle_dash/api/fetchdata.dart';
+
 
 class AboutSpindle extends StatefulWidget {
   const AboutSpindle({super.key});
@@ -104,7 +104,7 @@ class _AboutSpindleState extends State<AboutSpindle> {
                       child: SizedBox(
                         width: width * 0.6,
                         child: Text(
-                          '‘SMART’ integrated motor spindles represent a cutting-edge solution for high-performance machining applications, offering improved precision, efficiency, and reliability in a compact and smart integrated IIoT package. The designed Smart integrated motor spindles typically provide high precision and accuracy in machining operations.',
+                          'iPreciSpindle_18K  is a cutting-edge solution for integrated motor high speed SMART spindle. The system is designed and developed in collaboration with M/s Acumac, typically provide high frequency, high precision and accuracy for machine tool application. The developed i precispindle offers real time condition monitoring module enables Data analytics & adoptive control through SMART enabled IIoT board with GUI.',
                           style: TextStyle(
                             color: Colors.white, // Set text color to white
                             fontSize: 20, // Adjust font size as needed
@@ -224,7 +224,7 @@ class SalientFeatureItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    // double height = MediaQuery.of(context).size.height;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0), // Spacing between items
       child: Row(
@@ -263,6 +263,7 @@ class TableWidget extends StatefulWidget {
 class _TableWidgetState extends State<TableWidget> {
   List<String> Parameters = [
     "Spindle Type",
+    "Spindle Runout Accuracy",
     "Maximum Speed",
     "Rated Speed",
     "Rated Torque",
@@ -279,6 +280,8 @@ class _TableWidgetState extends State<TableWidget> {
   ];
   List<String> Specification = [
     "Integrated Motor (Synchronous) Spindle",
+    '<2 µm',
+
     "20000 rpm",
     "18000 rpm",
     "42 Nm @ 3500 rpm",
