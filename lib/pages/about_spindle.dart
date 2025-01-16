@@ -83,56 +83,37 @@ class _AboutSpindleState extends State<AboutSpindle> {
               SingleChildScrollView(
                 child: Column(
                   children: [
-                    FutureBuilder<String>(
-                      future: _modelPath,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Center(
-                            child: Text('Error: ${snapshot.error}'),
-                          );
-                        } else {
-                          return SizedBox(
-                            height: height * 0.40,
-                            width: width * 0.55,
-                            child: const ModelViewer(
-                              interactionPrompt: InteractionPrompt.none,
-                              cameraOrbit: "0deg 100deg 70%",
-                              backgroundColor: Color.fromARGB(144, 36, 36, 36),
-                              // src: snapshot.data!,
-                              // src:"https://firebasestorage.googleapis.com/v0/b/dos1-23caf.appspot.com/o/Spindle.gltf?alt=media&token=ac3e2e4b-c7c2-4138-8153-740857562a07",
-                              // src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
-                              src: 'assets/3dmodels/Spindle.gltf',
-                              alt: 'A 3D model of an astronaut',
-                              ar: true,
-                              autoRotate: true,
-                              disableZoom: true,
-                            ),
-                          );
-                        }
-                      },
+                    Container(
+                      height: height * 0.40,
+                      width: width * 0.55,
+                      child: ModelViewer(
+                        interactionPrompt: InteractionPrompt.none,
+                        cameraOrbit: "0deg 100deg 70%",
+                        backgroundColor: Color.fromARGB(144, 36, 36, 36),
+                        src:
+                            "https://firebasestorage.googleapis.com/v0/b/dos1-23caf.appspot.com/o/Spindle.gltf?alt=media&token=ac3e2e4b-c7c2-4138-8153-740857562a07",
+                        alt: 'A 3D model of an astronaut',
+                        ar: true,
+                        autoRotate: true,
+                        disableZoom: true,
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(width * 0.05, height * 0.03,
                           width * 0.05, height * 0.03),
                       child: SizedBox(
                         width: width * 0.6,
-                        child: const Flexible(
-                          child: Text(
-                            '‘SMART’ integrated motor spindles represent a cutting-edge solution for high-performance machining applications, offering improved precision, efficiency, and reliability in a compact and smart integrated IIoT package. The designed Smart integrated motor spindles typically provide high precision and accuracy in machining operations.',
-                            style: TextStyle(
-                              color: Colors.white, // Set text color to white
-                              fontSize: 20, // Adjust font size as needed
-                            ),
-                            softWrap: true, // Allow text to wrap to the next line
-                            overflow:
-                                TextOverflow.visible, // Make overflow visible
-                            textAlign: TextAlign
-                                .justify, // Align text for better readability
+                        child: Text(
+                          '‘SMART’ integrated motor spindles represent a cutting-edge solution for high-performance machining applications, offering improved precision, efficiency, and reliability in a compact and smart integrated IIoT package. The designed Smart integrated motor spindles typically provide high precision and accuracy in machining operations.',
+                          style: TextStyle(
+                            color: Colors.white, // Set text color to white
+                            fontSize: 20, // Adjust font size as needed
                           ),
+                          softWrap: true, // Allow text to wrap to the next line
+                          overflow:
+                              TextOverflow.visible, // Make overflow visible
+                          textAlign: TextAlign
+                              .justify, // Align text for better readability
                         ),
                       ),
                     ),
@@ -154,7 +135,8 @@ class _AboutSpindleState extends State<AboutSpindle> {
                               ),
                             ),
                             SizedBox(
-                                height: 16), // Spacing between title and features
+                                height:
+                                    16), // Spacing between title and features
                             // Two-column features
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -164,7 +146,8 @@ class _AboutSpindleState extends State<AboutSpindle> {
                                 Expanded(
                                   flex: 2,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       SalientFeatureItem(
                                           text:
@@ -178,13 +161,17 @@ class _AboutSpindleState extends State<AboutSpindle> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(width: width * 0.1), // Spacing between columns
+                                SizedBox(
+                                    width:
+                                        width * 0.1), // Spacing between columns
                                 // Right column
                                 Expanded(
                                   flex: 2,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       SalientFeatureItem(
                                           text:
@@ -193,7 +180,8 @@ class _AboutSpindleState extends State<AboutSpindle> {
                                           text:
                                               "Data analytics & adaptive control"),
                                       SalientFeatureItem(
-                                          text: "IIoT enabled, Dashboard (GUI)"),
+                                          text:
+                                              "IIoT enabled, Dashboard (GUI)"),
                                     ],
                                   ),
                                 ),
@@ -324,8 +312,7 @@ class _TableWidgetState extends State<TableWidget> {
           children: [
             Cell('Parameter', width * 0.12, cell_height, true, false),
             for (int i = 0; i < Parameters.length; i++)
-              Cell(
-                  '${Parameters[i]}', width * 0.12, cell_height, false, false)
+              Cell('${Parameters[i]}', width * 0.12, cell_height, false, false)
           ],
         ),
         Column(
@@ -341,7 +328,6 @@ class _TableWidgetState extends State<TableWidget> {
   }
 
   Widget Cell(text, width, height, FirstColumnCheck, CenterOrStartCheck) {
-    
     return Container(
       width: width,
       height: height,
@@ -356,19 +342,17 @@ class _TableWidgetState extends State<TableWidget> {
           ),
           Flexible(
             child: Text(
-
               text,
               style: TextStyle(
-                  color: FirstColumnCheck ? Colors.white : Colors.black,
-                  fontSize: width * 0.07,
-                  ),
-                
+                color: FirstColumnCheck ? Colors.white : Colors.black,
+                fontSize: width * 0.07,
+              ),
+
               softWrap: true, // Allow text to wrap
               overflow: TextOverflow.visible, // Avoid overflow by clipping
               textAlign: CenterOrStartCheck
                   ? TextAlign.center
                   : TextAlign.start, // Align text dynamically
-              
             ),
           ),
         ],

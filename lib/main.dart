@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:spindle_dash/pages/about_spindle.dart';
 import 'package:spindle_dash/pages/architecture.dart';
@@ -16,10 +17,8 @@ import 'firebase_options.dart';
 
 import 'dart:math' as math show pi;
 
-void main() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+void main() {
+    WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -141,12 +140,40 @@ class _spindledashboardState extends State<spindledashboard>
       body: TabBarView(
         controller: _tabController,
         children: const [
-          Center(child: AboutSpindle()),
+          // Center(child: AboutPagetest()),
+          Center(
+            child: AboutSpindle(),
+          ),
           Center(child: ArchitecturePage()),
           Center(child: Subswitcher1()),
           Center(child: Subswitcher2()),
         ],
       ),
     );
+  }
+}
+
+class AboutPagetest extends StatefulWidget {
+  const AboutPagetest({super.key});
+
+  @override
+  State<AboutPagetest> createState() => _AboutPagetestState();
+}
+
+class _AboutPagetestState extends State<AboutPagetest> {
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+        body: ModelViewer(
+      backgroundColor: Color.fromARGB(0xFF, 0xEE, 0xEE, 0xEE),
+      // src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
+      src:
+          "https://firebasestorage.googleapis.com/v0/b/dos1-23caf.appspot.com/o/Spindle.gltf?alt=media&token=ac3e2e4b-c7c2-4138-8153-740857562a07",
+      alt: 'A 3D model of an astronaut',
+      ar: true,
+      autoRotate: true,
+      iosSrc: 'https://modelviewer.dev/shared-assets/models/Astronaut.usdz',
+      disableZoom: true,
+    ));
   }
 }

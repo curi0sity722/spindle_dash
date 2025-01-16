@@ -75,6 +75,8 @@ flutter:
     - assets/images/
     - assets/images/hpp.png
     - assets/3dmodels/Spindle.gltf
+    - assets/3dmodels/spindle_2.glb
+    - assets/3dmodels/Astronaut.glb
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

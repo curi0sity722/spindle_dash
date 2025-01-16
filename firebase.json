@@ -1,1 +1,52 @@
-{"hosting":{"site":"spindle-dashboard","source":".","ignore":["firebase.json","**/.*","**/node_modules/**"],"frameworksBackend":{"region":"asia-east1"}},"flutter":{"platforms":{"android":{"default":{"projectId":"dos1-23caf","appId":"1:1043763935492:android:62a7fa570200ddcf977851","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"dos1-23caf","configurations":{"android":"1:1043763935492:android:62a7fa570200ddcf977851","ios":"1:1043763935492:ios:c88a54c1f9adffc5977851","macos":"1:1043763935492:ios:c88a54c1f9adffc5977851","web":"1:1043763935492:web:60c2e2d5b55cfc54977851","windows":"1:1043763935492:web:f377507255d17144977851"}}}}}}
+{
+    "hosting": {
+      "site": "spindle-dashboard",
+      "public": "build/web",
+      "headers": [
+        {
+          "source": "/assets/3dmodels/*.gltf",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "model/gltf+json"
+            }
+          ]
+        }
+      ],
+      "rewrites": [
+        {
+          "source": "/**",
+          "destination": "/index.html"
+        }
+      ],
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ]
+    },
+    "flutter": {
+      "platforms": {
+        "android": {
+          "default": {
+            "projectId": "dos1-23caf",
+            "appId": "1:1043763935492:android:62a7fa570200ddcf977851",
+            "fileOutput": "android/app/google-services.json"
+          }
+        },
+        "dart": {
+          "lib/firebase_options.dart": {
+            "projectId": "dos1-23caf",
+            "configurations": {
+              "android": "1:1043763935492:android:62a7fa570200ddcf977851",
+              "ios": "1:1043763935492:ios:c88a54c1f9adffc5977851",
+              "macos": "1:1043763935492:ios:c88a54c1f9adffc5977851",
+              "web": "1:1043763935492:web:60c2e2d5b55cfc54977851",
+              "windows": "1:1043763935492:web:f377507255d17144977851"
+            }
+          }
+        }
+      }
+    }
+  }
+  
