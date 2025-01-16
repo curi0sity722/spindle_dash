@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import "dart:math";
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
-
 class AboutSpindle extends StatefulWidget {
   const AboutSpindle({super.key});
 
@@ -76,12 +75,12 @@ class _AboutSpindleState extends State<AboutSpindle> {
         backgroundColor: Colors.black87,
         body: Padding(
           padding: EdgeInsets.only(top: height * 0.05),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SingleChildScrollView(
-                child: Column(
+          child: SingleChildScrollView(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Column(
                   children: [
                     Container(
                       height: height * 0.40,
@@ -150,14 +149,18 @@ class _AboutSpindleState extends State<AboutSpindle> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       SalientFeatureItem(
-                                          text:
-                                              "Design assisted for high frequency"),
+                                        text:
+                                            "Design assisted for high frequency",
+                                        picture_index: 1,
+                                      ),
                                       SalientFeatureItem(
                                           text:
-                                              "Additional micro balancing system"),
+                                              "Additional micro balancing system",
+                                          picture_index: 2),
                                       SalientFeatureItem(
                                           text:
-                                              "Inbuilt sensors for data acquisition"),
+                                              "Inbuilt sensors for data acquisition",
+                                          picture_index: 3),
                                     ],
                                   ),
                                 ),
@@ -174,14 +177,19 @@ class _AboutSpindleState extends State<AboutSpindle> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       SalientFeatureItem(
-                                          text:
-                                              "Real-time data condition monitoring"),
+                                        text:
+                                            "Real-time data condition monitoring",
+                                        picture_index: 4,
+                                      ),
                                       SalientFeatureItem(
-                                          text:
-                                              "Data analytics & adaptive control"),
+                                        text:
+                                            "Data analytics & adaptive control",
+                                        picture_index: 5,
+                                      ),
                                       SalientFeatureItem(
-                                          text:
-                                              "IIoT enabled, Dashboard (GUI)"),
+                                        text: "IIoT enabled, Dashboard (GUI)",
+                                        picture_index: 6,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -193,12 +201,12 @@ class _AboutSpindleState extends State<AboutSpindle> {
                     ),
                   ],
                 ),
-              ),
-              // SizedBox(
-              //   height: height * 0.02,
-              // ),
-              const TableWidget()
-            ],
+                // SizedBox(
+                //   height: height * 0.02,
+                // ),
+                const TableWidget()
+              ],
+            ),
           ),
         ),
       ),
@@ -218,36 +226,57 @@ class _AboutSpindleState extends State<AboutSpindle> {
 
 class SalientFeatureItem extends StatelessWidget {
   final String text;
+  final int picture_index;
 
-  const SalientFeatureItem({required this.text});
+  const SalientFeatureItem({required this.text, required this.picture_index});
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    // double height = MediaQuery.of(context).size.height;
+    double height = MediaQuery.of(context).size.height;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0), // Spacing between items
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            "•", // Bullet point
-            style: TextStyle(
-              color: Colors.lightGreen,
-              fontSize: 16,
+      padding:  EdgeInsets.only(bottom: height * 0.02), // Spacing between items
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color.fromARGB(83, 46, 74, 235), // Background color for the container
+          borderRadius: BorderRadius.circular(10), // Rounded corners
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3), // Soft shadow
+              spreadRadius: 3,
+              blurRadius: 5,
+              offset: Offset(0, 3), // Shadow position
             ),
-          ),
-          SizedBox(width: width * 0.02), // Spacing between bullet and text
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(
-                color: Colors.lightGreen,
-                fontSize: 24,
+          ],
+        ),
+        padding: EdgeInsets.all(10), // Padding inside the container
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: height * 0.05,
+              width: width * 0.1,
+              child: Image.asset(
+                'assets/images/feature-${picture_index}.png',
+                fit: BoxFit.fitHeight, // Ensure the image fits well
               ),
             ),
-          ),
-        ],
+            SizedBox(width: width * 0.005), // Spacing between image and text
+            Expanded(
+              child: Text(
+                text,
+                style: const TextStyle(
+                  
+                  color: Colors.white, // Text color
+                  fontSize: 20, // Font size for readability
+                  fontWeight: FontWeight.w500, // Slightly bold
+                  fontFamily: 'Roboto', // Use a modern font
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -281,7 +310,6 @@ class _TableWidgetState extends State<TableWidget> {
   List<String> Specification = [
     "Integrated Motor (Synchronous) Spindle",
     '<2 µm',
-
     "20000 rpm",
     "18000 rpm",
     "42 Nm @ 3500 rpm",

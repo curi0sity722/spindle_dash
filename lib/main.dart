@@ -41,7 +41,7 @@ class _spindledashboardState extends State<spindledashboard>
     with TickerProviderStateMixin {
   late TabController _tabController;
   final List<Widget> _tabList = [
-    Tab(icon: Icon(Icons.perm_device_information), text: 'About Spindle'),
+    Tab(icon: Icon(Icons.perm_device_information), text: 'About Spindle',),
     Tab(icon: Icon(Icons.architecture), text: 'Architecture'),
     Tab(icon: Icon(Icons.health_and_safety), text: 'Health Monitoring'),
     Tab(icon: Icon(Icons.analytics), text: 'Analysis and Diagnosis'),
@@ -70,40 +70,31 @@ class _spindledashboardState extends State<spindledashboard>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 100,
         backgroundColor: const Color.fromARGB(255, 0, 0, 75),
-        title: const Row(
-          children: [
-            // Image.asset('assets/cmti.jpeg'),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                'Smart Integrated Motor Spindle DashBoard',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
+        title: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Text(
+            'Smart Integrated Motor Spindle DashBoard',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(55.0), // Adjust height as needed
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-                vertical: 5.0, horizontal: 10.0), // Add padding
+            padding:
+                const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
             child: Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.center, // Center the TabBar horizontally
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TabBar(
                   controller: _tabController,
-                  isScrollable: true, // Enable scrolling if tabs overflow
-                  labelColor: Colors.white, // Customize label color
-                  unselectedLabelColor:
-                      Colors.white54, // Customize unselected label color
+                  isScrollable: true,
+                  labelColor: Colors.white,
+                  unselectedLabelColor: Colors.white54,
                   indicator: BoxDecoration(
-                    // Customize tab indicator
-                    color:
-                        const Color.fromARGB(255, 65, 33, 243), // Change color
-                    borderRadius:
-                        BorderRadius.circular(10.0), // Add border radius
+                    // color: const Color.fromARGB(255, 65, 33, 243),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                   tabs: _tabList,
                 ),
@@ -118,30 +109,27 @@ class _spindledashboardState extends State<spindledashboard>
               _toggleTimer();
               Provider.of<InitialDurationProvider>(context, listen: false)
                   .setstartstop(_isRunning);
-              // print(Provider.of<InitialDurationProvider>(context, listen: false).handleStartStop);
             },
-            //onPressed: _toggleTimer,
             child: Text(
-                Provider.of<InitialDurationProvider>(context, listen: false)
-                        .handleStartStop
-                    ? 'Stop'
-                    : 'Start'),
+              Provider.of<InitialDurationProvider>(context, listen: false)
+                      .handleStartStop
+                  ? 'Stop'
+                  : 'Start',
+            ),
             style: ButtonStyle(
-                backgroundColor:
-                    Provider.of<InitialDurationProvider>(context, listen: false)
-                            .handleStartStop
-                        ? WidgetStateProperty.all<Color>(Colors.red)
-                        : WidgetStateProperty.all<Color>(Colors.green)),
+              backgroundColor:
+                  Provider.of<InitialDurationProvider>(context, listen: false)
+                          .handleStartStop
+                      ? WidgetStateProperty.all<Color>(Colors.red)
+                      : WidgetStateProperty.all<Color>(Colors.green),
+            ),
           ),
         ],
       ),
       body: TabBarView(
         controller: _tabController,
         children: const [
-          // Center(child: AboutPagetest()),
-          Center(
-            child: AboutSpindle(),
-          ),
+          Center(child: AboutSpindle()),
           Center(child: ArchitecturePage()),
           Center(child: Subswitcher1()),
           Center(child: Subswitcher2()),
